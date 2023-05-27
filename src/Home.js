@@ -1,11 +1,8 @@
 import Bloglist from "./Bloglist";
-import useFetch from "./useFetch";
+import useGet from "./useGet";
 
 const Home = () => {
-  const { data: blogs, isPending, error } = useFetch('http://localhost:8000/blogs');
-
-  
-
+  const { data: blogs, isPending, error } = useGet("http://localhost:8800/posts");
   return (
     <div className="home">
       {error && <div>{ error }</div>}

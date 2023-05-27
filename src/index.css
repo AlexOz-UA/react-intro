@@ -10,7 +10,7 @@
   padding: 20px;
   display: flex;
   align-items: center;
-  max-width: 600px;
+  max-width: 650px;
   margin: 0 auto;
   border-bottom: 1px solid #f2f2f2;
 }
@@ -58,10 +58,37 @@
   color: #f1356d;
   margin-bottom: 10px;
 }
-.blog-details div {
-  margin: 20px 0;
+.blog-details h3 {
+  font-size: 15px;
+  color: #f1356d;
+  margin-bottom: 10px;
+  float: left;
+}
+.blog-details #comment {
+  width: 100%;
+  padding: 6px 10px;
+  margin: 10px 0;
+  border: 3px solid #ddd;
+  box-sizing: border-box;
+  display: block;
+  list-style-type: none;
+}
+.blog-details textarea{
+  padding: 6px 10px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  box-sizing: border-box;
+  /* display: block; */
 }
 .blog-details button {
+  background: #f1356d;
+  color: #fff;
+  border: 0;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.navbar button {
   background: #f1356d;
   color: #fff;
   border: 0;
@@ -94,6 +121,36 @@
   display: block;
 }
 .create button {
+  background: #f1356d;
+  color: #fff;
+  border: 0;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.login {
+  max-width: 400px;
+  margin: 0 auto;
+  text-align: center;
+}
+.login h2 {
+  font-size: 20px;
+  color: #f1356d;
+  margin-bottom: 30px;
+}
+.login label {
+  text-align: left;
+  display: block;
+}
+.login input {
+  width: 100%;
+  padding: 6px 10px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  box-sizing: border-box;
+  display: block;
+}
+.login button {
   background: #f1356d;
   color: #fff;
   border: 0;

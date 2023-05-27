@@ -17,7 +17,8 @@ function Login() {
     }
   };
   return (
-    <div>
+    <div className="login">
+      <h2>Login or Sign in</h2>
       <label>
         Username:
         <input
