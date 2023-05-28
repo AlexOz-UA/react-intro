@@ -1,33 +1,19 @@
 import { useState } from "react";
-import axios from "axios";
+import axiosPost from "../helpFuncs/axiosPost";
+import { useHistory } from "react-router-dom";
 
 const Create = () => {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [isPending, setIsPending] = useState(false);
-  const [error, setError] = useState(null);
+  const history = useHistory();
 
   const HandleSubmit = (e) => {
+    const data = { name: title, body: body }
     e.preventDefault();
-    axios.post("http://localhost:8800/postsadd", {
-        name: title,
-        body: body 
-      })
-      .then((res) => {
-        if (res.status !== 200) {
-          throw Error("could not fetch data for that resource");
-        }
-        setError(null);
-        setIsPending(false);
-        setBody("");
-        setTitle("");
-        return JSON.stringify(res);
-      })
-      .catch((err) => {
-          setError(err.message);
-          alert(error)
-      });
-    return;
+    axiosPost("http://localhost:8800/posts-add", data);
+    history.push("/")
+    setIsPending(false);
   };
 
   return (
@@ -36,6 +22,7 @@ const Create = () => {
       <form onSubmit={HandleSubmit}>
         <label>Blog title:</label>
         <input
+          maxLength={25}
           type="text"
           required
           value={title}
@@ -43,6 +30,7 @@ const Create = () => {
         />
         <label>Blog body:</label>
         <textarea
+          maxLength={1000}
           required
           value={body}
           onChange={(e) => setBody(e.target.value)}

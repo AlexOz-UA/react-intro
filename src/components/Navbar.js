@@ -1,26 +1,14 @@
 import { Link } from "react-router-dom";
-import axios from "axios"
+import axiosDelete from "../helpFuncs/axiosDelete";
 
 const Navbar = () => {
     function handleAllCommentsDelete() {
-        axios.delete(`http://localhost:8800/allcommentsdelete`)
-          .then((response) => {
-            return JSON.stringify(response);
-          })
-          .catch((error) => {
-            alert("Error:", error);
-          });
-      }
+        axiosDelete(`http://localhost:8800/all-comments-delete`);
+    }
 
-      function handleAllPostsDelete() {
-        axios.delete(`http://localhost:8800/allpostsdelete`)
-          .then((response) => {
-            return JSON.stringify(response);
-          })
-          .catch((error) => {
-            alert("Error:", error);
-          });
-      }
+    function handleAllPostsDelete() {
+      axiosDelete(`http://localhost:8800/all-posts-delete`);
+    }
 
     return (
         <nav className="navbar">
