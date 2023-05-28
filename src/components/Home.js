@@ -1,5 +1,5 @@
 import Bloglist from "./Bloglist";
-import useGet from "./useGet";
+import useGet from "../hooks/https/useGet";
 
 const Home = () => {
   const { data: blogs, isPending, error } = useGet("http://localhost:8800/posts");

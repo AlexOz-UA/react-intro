@@ -1,46 +1,25 @@
-import { useHistory, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useState } from "react";
-import useGet from "./useGet";
+import useGet from "../hooks/https/useGet";
 import axios from "axios";
 
 const BlogDetails = () => {
   const { id } = useParams();
-  const {
-    data: blog,
-    error,
-    isPending,
-  } = useGet(`http://localhost:8800/post/${id}`);
+  const { data: blog, error, isPending, } = useGet(`http://localhost:8800/post/${id}`);
   const { data: comments } = useGet(`http://localhost:8800/comment/${id}`);
-  console.log(`http://localhost:8800/post/${id}`);
-  // const isLogined = getCookie("isLoginned");
   let [newComment, setComment] = useState("");
   let [userName, setUserName] = useState("");
-  // function getCookie(cname) {
-  //   let name = cname + "=";
-  //   let decodedCookie = decodeURIComponent(document.cookie);
-  //   let ca = decodedCookie.split(";");
-  //   for (let i = 0; i < ca.length; i++) {
-  //     let c = ca[i];
-  //     while (c.charAt(0) === " ") {
-  //       c = c.substring(1);
-  //     }
-  //     if (c.indexOf(name) === 0) {
-  //       return c.substring(name.length, c.length);
-  //     }
-  //   }
-  //   return "";
-  // }
+
   function handleAllCommentsDelete() {
-    axios
-      .delete(`http://localhost:8800/allcommentsdelete/${id}`)
+    axios.delete(`http://localhost:8800/allcommentsdelete/${id}`)
       .then((response) => {
-        console.log(response);
         return JSON.stringify(response);
       })
       .catch((error) => {
-        console.error("Error:", error);
+        alert("Error:", error);
       });
   }
+
   function handleSubmit(e) {
     axios
       .post(`http://localhost:8800/comment/${id}`, {
@@ -48,26 +27,21 @@ const BlogDetails = () => {
         username: userName,
       })
       .then((response) => {
-        console.log(response);
         return JSON.stringify(response);
       })
       .catch((error) => {
-        console.error("Error:", error);
+        alert("Error:", error);
       });
   }
 
   function handlePostDelete() {
     axios
       .delete(`http://localhost:8800/delete/${id}`, {})
-      .then(() => {
-        axios.delete(`http://localhost:8800/commentdelete/${id}`, {});
-      })
       .then((response) => {
-        console.log(response);
         return JSON.stringify(response);
       })
       .catch((error) => {
-        console.error("Error:", error);
+        alert("Error:", error);
       });
   }
 
@@ -77,12 +51,10 @@ const BlogDetails = () => {
         data: { id: commentId },
       })
       .then((response) => {
-        console.log(commentId);
-        console.log(response);
         return JSON.stringify(response);
       })
       .catch((error) => {
-        console.error("Error:", error);
+        alert("Error:", error);
       });
   }
 

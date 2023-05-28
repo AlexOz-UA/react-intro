@@ -5,30 +5,23 @@ const useGet = (url) => {
   const [data, setData] = useState(null);
   const [isPending, setIsPending] = useState(true);
   const [error, setError] = useState(null);
+  
   useEffect(() => {
-    const abortCont = new AbortController();
-
-    axios.get(url, { signal: abortCont.signal })
+    axios.get(url)
       .then((res) => {
-        if (res.status != 200) {
+        if (res.status !== 200) {
           throw Error("could not fetch data for that resource");
         }
-        console.log(res.data);
         setError(null);
         setData(res.data);
         setIsPending(false);
         return JSON.stringify(res);
       })
       .catch((err) => {
-        if (err.name === "AbortError") {
-          console.log("fetch abborted");
-        } else {
-          setError(err.message);
-        }
+        setError(err.message);
+        alert(error)
       });
-
-    return () => abortCont.abort();
-  }, [url]);
+  }, [url,error]);
 
   return { data, isPending, error };
 };

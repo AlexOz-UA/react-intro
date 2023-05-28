@@ -4,14 +4,14 @@ import { useEffect, useState } from "react";
 const usePost = (url, postData) => {
   const [isPending, setIsPending] = useState(true);
   const [error, setError] = useState(null);
-  useEffect(() => {
 
+  useEffect(() => {
     axios.post(url, {
         name: postData.title,
         category: postData.category 
       })
       .then((res) => {
-        if (res.status != 200) {
+        if (res.status !== 200) {
           throw Error("could not fetch data for that resource");
         }
         setError(null);
@@ -20,6 +20,7 @@ const usePost = (url, postData) => {
       })
       .catch((err) => {
           setError(err.message);
+          alert(error);
       });
 
     return;

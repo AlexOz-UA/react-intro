@@ -3,27 +3,25 @@ import axios from "axios"
 
 const Navbar = () => {
     function handleAllCommentsDelete() {
-        axios
-          .delete(`http://localhost:8800/allcommentsdelete`)
+        axios.delete(`http://localhost:8800/allcommentsdelete`)
           .then((response) => {
-            console.log(response);
             return JSON.stringify(response);
           })
           .catch((error) => {
-            console.error("Error:", error);
+            alert("Error:", error);
           });
       }
+
       function handleAllPostsDelete() {
-        axios
-          .delete(`http://localhost:8800/allpostsdelete`)
+        axios.delete(`http://localhost:8800/allpostsdelete`)
           .then((response) => {
-            console.log(response);
             return JSON.stringify(response);
           })
           .catch((error) => {
-            console.error("Error:", error);
+            alert("Error:", error);
           });
       }
+
     return (
         <nav className="navbar">
             <h1>React Blog</h1>
