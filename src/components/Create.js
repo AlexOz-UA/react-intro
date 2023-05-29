@@ -1,12 +1,14 @@
 import { useState } from "react";
 import axiosPost from "../helpFuncs/axiosPost";
 import { useHistory } from "react-router-dom";
+import useGet from "../hooks/https/useGet";
 
 const Create = () => {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [isPending, setIsPending] = useState(false);
   const history = useHistory();
+  const { data: categories } = useGet("http://localhost:8800/categories")
 
   const HandleSubmit = (e) => {
     const data = { name: title, body: body }
@@ -35,6 +37,11 @@ const Create = () => {
           value={body}
           onChange={(e) => setBody(e.target.value)}
         ></textarea>
+        <select>
+        {categories && categories.map((item) => (
+          <option>{item.title}</option>
+        ))}
+        </select>
         {!isPending && <button>Add blog</button>}
         {isPending && <button disabled>Adding blog...</button>}
       </form>
