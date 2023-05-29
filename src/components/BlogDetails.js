@@ -1,9 +1,8 @@
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { useState } from "react";
 import useGet from "../hooks/https/useGet";
 import axios from "axios";
 import axiosDelete from "../helpFuncs/axiosDelete";
-import { useHistory } from "react-router-dom";
 import axiosPost from "../helpFuncs/axiosPost";
 
 const BlogDetails = () => {
@@ -11,6 +10,7 @@ const BlogDetails = () => {
   const { id } = useParams();
   const { data: blog, error, isPending, } = useGet(`http://localhost:8800/post/${id}`);
   const { data: comments } = useGet(`http://localhost:8800/comment/${id}`);
+
   let [newComment, setComment] = useState("");
   let [userName, setUserName] = useState("");
 
@@ -54,7 +54,7 @@ const BlogDetails = () => {
           <form onSubmit={handleAllCommentsDelete}>
             <button style={{ float: "right" }}>Delete all commentaries</button>
           </form>
-         <h2>{blog && blog[0].name}</h2>
+         <h1>{blog && blog[0].name}</h1>
           <p className="blog-body">{blog && blog[0].body}</p>
           <label>Comment section:</label>
           {comments && (
@@ -75,11 +75,13 @@ const BlogDetails = () => {
               Write something new...
             </h3>
             <textarea
+              required
               maxLength={255}
               placeholder="Write smth!"
               onChange={(e) => setComment(e.target.value)}
             ></textarea>
             <textarea
+              required
               maxLength={20}
               placeholder="Write your name!!"
               onChange={(e) => setUserName(e.target.value)}

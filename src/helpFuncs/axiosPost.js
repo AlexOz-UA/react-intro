@@ -5,7 +5,6 @@ export default function axiosPost (url, data) {
         data
     })
     .then((response) => {
-        console.log(data)
       return JSON.stringify(response);
     })
     .catch((error) => {
