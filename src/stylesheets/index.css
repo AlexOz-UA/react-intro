@@ -52,7 +52,6 @@
   text-decoration: none;
 }
 
-/* blog details page */
 .blog-details h1 {
   font-size: 25px;
   color: #f1356d;
@@ -162,6 +161,19 @@
   display: block;
 }
 .login button {
+  background: #f1356d;
+  color: #fff;
+  border: 0;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.admin-page h1{
+  font-size: 20px;
+  color: #f1356d;
+  margin-bottom: 8px;
+}
+.admin-page button{
   background: #f1356d;
   color: #fff;
   border: 0;

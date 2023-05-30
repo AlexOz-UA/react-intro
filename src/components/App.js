@@ -5,6 +5,7 @@ import Create from './Create';
 import BlogDetails from './BlogDetails';
 import NotFound from './NotFound';
 import Login from './Login'; 
+import AdminPage from './AdminPage'
 
 function App() {
   return (
@@ -18,6 +19,9 @@ function App() {
           </Route>
           <Route path="/create">
             <Create />
+          </Route>
+          <Route path="/admin/12345">
+            <AdminPage />
           </Route>
           <Route path="/blogs/:id">
             <BlogDetails />
