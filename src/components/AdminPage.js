@@ -15,7 +15,7 @@ const AdminPage = (props) => {
 
   const handleCategoryDelete = (e) => {
     axios.delete("http://localhost:8800/category-delete", {data: {
-        title: categoryForDelete
+        id: categoryForDelete
     }})
       .then((response) => {
         console.log(response);
@@ -48,7 +48,7 @@ const AdminPage = (props) => {
         Delete category
         <select style={{ margin: "0px 10px 0px 10px" }} onChange={(e) => {setCategoryForDelete(e.target.value)}}>
         {categories && categories.map((item) => (
-          <option key={item.id}>{item.title}</option>
+          <option key={item.id} value={item.id}>{item.title}</option>
         ))}
         </select>
         <button>Delete</button>

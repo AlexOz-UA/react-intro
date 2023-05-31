@@ -181,3 +181,12 @@
   border-radius: 8px;
   cursor: pointer;
 }
+.blog-categories p{
+  width: 100%;
+  padding: 6px 10px;
+  margin: 10px 0;
+  border: 3px solid #ddd;
+  box-sizing: border-box;
+  display: block;
+  list-style-type: none;
+}

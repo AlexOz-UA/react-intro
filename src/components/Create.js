@@ -7,11 +7,24 @@ const Create = () => {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [isPending, setIsPending] = useState(false);
+  const [categoriesForPost, setCategoriesForPost] = useState([]);
   const history = useHistory();
   const { data: categories } = useGet("http://localhost:8800/categories")
+  
+    const handleSelectChange = (event) => {
+      const options = event.target.options;
+      const selectedValues = [];
+      for (let i = 0; i < options.length; i++) {
+        if (options[i].selected) {
+          selectedValues.push(options[i].value);
+        }
+      }
+      setCategoriesForPost(selectedValues);
+      
+    };
 
   const HandleSubmit = (e) => {
-    const data = { name: title, body: body }
+    const data = { name: title, body: body, postId: title, categoryId: categoriesForPost }
     e.preventDefault();
     axiosPost("http://localhost:8800/posts-add", data);
     history.push("/")
@@ -37,14 +50,14 @@ const Create = () => {
           value={body}
           onChange={(e) => setBody(e.target.value)}
         ></textarea>
-        <select>
+        <select onChange={handleSelectChange} multiple required>
         {categories && categories.map((item) => (
-          <option>{item.title}</option>
+          <option key={item.id} value={item.id}>{item.title}</option>
         ))}
         </select>
         {!isPending && <button>Add blog</button>}
+        </form>
         {isPending && <button disabled>Adding blog...</button>}
-      </form>
     </div>
   );
 };
