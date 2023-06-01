@@ -2,11 +2,20 @@ import React, { useState } from "react";
 import useGet from "../hooks/https/useGet";
 import axiosPost from "../helpFuncs/axiosPost";
 import axios from "axios";
+import axiosDelete from "../helpFuncs/axiosDelete";
 
 const AdminPage = (props) => {
   const { data: categories } = useGet("http://localhost:8800/categories");
   const [categoryTitle, setCategoryTitle] = useState();
   const [categoryForDelete, setCategoryForDelete] = useState();
+
+  function handleAllCommentsDelete() {
+    axiosDelete(`http://localhost:8800/all-comments-delete`);
+  }
+
+  function handleAllPostsDelete() {
+    axiosDelete(`http://localhost:8800/all-posts-delete`);
+  }
 
   const handleCategoryAdd = () => {
     const data = {title: categoryTitle};
@@ -53,6 +62,8 @@ const AdminPage = (props) => {
         </select>
         <button>Delete</button>
       </form>
+      <button onClick={handleAllCommentsDelete}>Clear all comments</button>
+      <form style={{float:"right"}} onSubmit={handleAllPostsDelete}><button>Clear all posts</button></form>
     </div>
   );
 };

@@ -6,6 +6,7 @@ import BlogDetails from './BlogDetails';
 import NotFound from './NotFound';
 import Login from './Login'; 
 import AdminPage from './AdminPage'
+import Footer from './Footer';
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
           </Route>
         </Switch>
       </div>
+      <Footer />
     </div>
     </Router> 
   );
