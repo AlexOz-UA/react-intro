@@ -50,7 +50,7 @@ const Create = () => {
           value={body}
           onChange={(e) => setBody(e.target.value)}
         ></textarea>
-        <select onChange={handleSelectChange} multiple required maxLength={2}>
+        <select onChange={handleSelectChange} multiple required>
         {categories && categories.map((item) => (
           <option key={item.id} value={item.id}>{item.title}</option>
         ))}
