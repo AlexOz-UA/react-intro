@@ -12,8 +12,7 @@ const BlogDetails = () => {
   const { data: blog, error, isPending, } = useGet(`http://localhost:8800/post/${id}`);
   const { data: comments } = useGet(`http://localhost:8800/comment/${id}`);
   const { data: categories } = useGetWithData(`http://localhost:8800/categories/${id}`, {title: blog && blog[0] && blog[0].name});
-  if(categories) console.log(categories);
-
+  
   let [newComment, setComment] = useState("");
   let [userName, setUserName] = useState("");
 

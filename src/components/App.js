@@ -7,6 +7,7 @@ import NotFound from './NotFound';
 import Login from './Login'; 
 import AdminPage from './AdminPage'
 import Footer from './Footer';
+import Register from './Register';
 
 function App() {
   return (
@@ -29,6 +30,9 @@ function App() {
           </Route>
           <Route path="/login">
             <Login />
+          </Route>
+          <Route path="/register">
+            <Register />
           </Route>
           <Route path="*">
             <NotFound />

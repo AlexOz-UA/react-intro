@@ -1,30 +1,38 @@
 import React, { useState } from "react";
+import axios from "axios";
 
 function Login() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [isLogined, setIsLogined] = useState(false);
+  const [userName, setUsername] = useState("");
+  const [userPassword, setPassword] = useState("");
+
+  const [loginStatus, setLoginStatus] = useState("");
 
   const handleLogin = () => {
-    if (username === "admin" && password === "admin") {
-      alert("Correct login information! Now you can delete and change Blogs");
-      setIsLogined(true);
-      document.cookie = "isLoginned=true";
-      console.log(isLogined);
-    } else {
-      alert("Incorrect login information.");
-      setIsLogined(false);
-    }
+    let data = { username: userName, password: userPassword };
+    axios
+      .post("http://localhost:8800/user-login", {
+        data,
+      })
+      .then((response) => {
+        console.log(JSON.stringify(response));
+        if(response.data.message) {setLoginStatus(response.data.message)}
+        else {
+          setLoginStatus(response.data[0].username )
+        }
+      })
+      .catch((error) => {
+        alert("Error:", error);
+      });
   };
-  
+
   return (
     <div className="login">
-      <h2>Login or Sign in</h2>
+      <h2>Login</h2>
       <label>
         Username:
         <input
           type="text"
-          value={username}
+          value={userName}
           onChange={(e) => setUsername(e.target.value)}
         />
       </label>
@@ -33,14 +41,15 @@ function Login() {
         Password:
         <input
           type="password"
-          value={password}
+          value={userPassword}
           onChange={(e) => setPassword(e.target.value)}
         />
       </label>
       <br />
       <button onClick={handleLogin}>Log In</button>
+
+      <h1>{loginStatus}</h1>
     </div>
   );
 }
 export default Login;
-
