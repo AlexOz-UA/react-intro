@@ -8,6 +8,7 @@ const AdminPage = (props) => {
   const { data: categories } = useGet("http://localhost:8800/categories");
   const [categoryTitle, setCategoryTitle] = useState();
   const [categoryForDelete, setCategoryForDelete] = useState();
+  const adminState = localStorage.getItem("isAdmin");
 
   function handleAllCommentsDelete() {
     axiosDelete(`http://localhost:8800/all-comments-delete`);
@@ -34,8 +35,20 @@ const AdminPage = (props) => {
       });
   };
 
+  const handleAdminCheck = () => {
+    console.log(adminState);
+    if(adminState == "true"){
+      return true;
+    }
+    else{
+      return false
+    }
+  }
+
   return (
-    <div className="admin-page">
+    <div>
+    {!handleAdminCheck() && <h1> You have no admin access. </h1>}
+    {handleAdminCheck() && <div className="admin-page">
       <h1 style={{ marginBottom: "10px" }}>Categories</h1>
       {categories &&
         categories.map((item) => (
@@ -64,6 +77,7 @@ const AdminPage = (props) => {
       </form>
       <button onClick={handleAllCommentsDelete}>Clear all comments</button>
       <form style={{float:"right"}} onSubmit={handleAllPostsDelete}><button>Clear all posts</button></form>
+    </div>}
     </div>
   );
 };

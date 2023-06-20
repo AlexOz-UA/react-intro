@@ -15,9 +15,15 @@ function Login() {
       })
       .then((response) => {
         console.log(JSON.stringify(response));
-        if(response.data.message) {setLoginStatus(response.data.message)}
-        else {
-          setLoginStatus(response.data[0].username )
+        if (response.data.message) {
+          setLoginStatus(response.data.message);
+        }
+        if (response.data[1]) {
+          setLoginStatus("Hello, admin " + response.data[0][0].username);
+          localStorage.setItem("isAdmin", "true");
+        }
+        if (!response.data[1]) {
+          setLoginStatus("Hello, " + response.data[0].username);
         }
       })
       .catch((error) => {

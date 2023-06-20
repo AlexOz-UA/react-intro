@@ -1,14 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 * {
   margin: 0;
   font-family: "Quicksand";
   color: #333;
 }
+
 #root button:hover{
   background-color: #c12353;
   cursor: pointer;
 }
+
 .navbar {
   padding: 20px;
   display: flex;
@@ -199,14 +202,14 @@
   font-size: 14px;
   border-radius: 20px;
   margin-right: 8px;
-  font-family: Arial, sans-serif;
+  font-family: "Poppins";
   text-transform: uppercase;
   transition: background-color 0.3s ease-in-out;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 #category:hover {
-  background-color: #c12353;
+  background-color: #ce2256;
   cursor: pointer;
 }
 .footer {

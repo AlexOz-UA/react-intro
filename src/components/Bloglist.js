@@ -1,6 +1,11 @@
 import { Link } from 'react-router-dom'
 
 const Bloglist = ({ blogs, title}) => {
+
+  window.onload = function() {
+    localStorage.clear()
+  }
+
   return (
     <div className="blog-list">
         <h2>{ title }</h2>

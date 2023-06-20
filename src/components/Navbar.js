@@ -10,6 +10,7 @@ const Navbar = () => {
                 <Link to="/create">New Blog</Link>
                 <Link to="/register">Register</Link>
                 <Link to="/login">Login</Link>
+                <Link to="/adminpanel">Admin</Link>
             </div>
         </nav>
     );
