@@ -7,6 +7,7 @@ import axiosDelete from "../helpFuncs/axiosDelete";
 import axiosPost from "../helpFuncs/axiosPost";
 
 const BlogDetails = () => {
+  const adminState = localStorage.getItem("isAdmin");
   const history = useHistory();
   const { id } = useParams();
   const { data: blog, error, isPending, } = useGet(`http://localhost:8800/post/${id}`);
@@ -15,6 +16,16 @@ const BlogDetails = () => {
 
   let [newComment, setComment] = useState("");
   let [userName, setUserName] = useState("");
+
+  const handleAdminCheck = () => {
+    console.log(adminState);
+    if(adminState == "true"){
+      return true;
+    }
+    else{
+      return false
+    }
+  }
 
   function handleAllCommentsDelete() {
     axiosDelete(`http://localhost:8800/all-comments-delete/${id}`);
@@ -50,11 +61,11 @@ const BlogDetails = () => {
       {error && <div>{error}</div>}
       {blog && (
         <article>
-          <form onSubmit={handlePostDelete}>
-          <button style={{ float: "right" }}>Delete this post</button>
+         <form onSubmit={handlePostDelete}>
+         {handleAdminCheck() && <button style={{ float: "right" }}>Delete this post</button>}
           </form>
           <form onSubmit={handleAllCommentsDelete}>
-            <button style={{ float: "right" }}>Delete all commentaries</button>
+            {handleAdminCheck() && <button style={{ float: "right" }}>Delete all commentaries</button>}
           </form>
          <h1>{blog && blog[0].name}</h1>
          {categories && categories.map((item) => (
@@ -67,7 +78,7 @@ const BlogDetails = () => {
               {comments.map((item) => (
                 <li key={item.id}>
                   <form onSubmit={() => handleCommentDelete(item.id)}>
-                    <button style={{ float: "right" }}>Delete</button>
+                    {handleAdminCheck() && <button style={{ float: "right" }}>Delete</button>}
                   </form>
                   <h2>{item.username}</h2>
                   <p style={{ marginBottom: "20px" }}>{item.title}</p>
