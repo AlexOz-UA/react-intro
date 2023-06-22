@@ -10,6 +10,7 @@ const Create = () => {
   const [categoriesForPost, setCategoriesForPost] = useState([]);
   const history = useHistory();
   const { data: categories } = useGet("http://localhost:8800/categories")
+  let creator = localStorage.getItem("userName");
   
     const handleSelectChange = (event) => {
       const options = event.target.options;
@@ -24,7 +25,7 @@ const Create = () => {
     };
 
   const HandleSubmit = (e) => {
-    const data = { name: title, body: body, postId: title, categoryId: categoriesForPost }
+    const data = { name: title, creator: creator,body: body, postId: title, categoryId: categoriesForPost }
     e.preventDefault();
     axiosPost("http://localhost:8800/posts-add", data);
     history.push("/")

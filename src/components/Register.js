@@ -6,7 +6,7 @@ function Register() {
   const [userPassword, setPassword] = useState("");
   const [userEmail, setEmail] = useState("");
 
-  const handleLogin = () => {
+  const handleLogin = (e) => {
     let data = {username: userName, email: userEmail, password: userPassword};
     axiosPost("http://localhost:8800/user-register", data);
     alert("The registration was succesful.");
@@ -14,11 +14,12 @@ function Register() {
   
   return (
     <div className="login">
-      <form onSubmit={handleLogin}>
+      <form onSubmit={(e) => handleLogin(e)}>
       <h2>Register</h2>
       <label>
         Username:
         <input required
+          maxLength={15}
           type="text"
           value={userName}
           onChange={(e) => setUsername(e.target.value)}
@@ -37,6 +38,8 @@ function Register() {
       <label>
         Password:
         <input required
+          minLength={8}
+          maxLength={20}
           type="password"
           value={userPassword}
           onChange={(e) => setPassword(e.target.value)}

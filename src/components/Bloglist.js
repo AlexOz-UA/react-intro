@@ -12,7 +12,8 @@ const Bloglist = ({ blogs, title}) => {
       {blogs && blogs.map((blog) => (
         <div className="blog-preview" key={blog.id}>
           <Link to={`/blogs/${blog.id}`}>
-          <h2>{blog.name}</h2>
+          <h2 style={{marginBottom:"5px"}}>{blog.name}</h2>
+          <h3 style={{marginBottom:"5px"}}>{blog.creator}</h3>
           <p>{blog.body.substring(0,20)}...</p>
           </Link>
         </div>

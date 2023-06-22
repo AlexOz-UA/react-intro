@@ -8,6 +8,7 @@ import axiosPost from "../helpFuncs/axiosPost";
 
 const BlogDetails = () => {
   const adminState = localStorage.getItem("isAdmin");
+  const isRegistered = localStorage.getItem("userName");
   const history = useHistory();
   const { id } = useParams();
   const { data: blog, error, isPending, } = useGet(`http://localhost:8800/post/${id}`);
@@ -15,7 +16,7 @@ const BlogDetails = () => {
   const { data: categories } = useGetWithData(`http://localhost:8800/categories/${id}`, {title: blog && blog[0] && blog[0].name});
 
   let [newComment, setComment] = useState("");
-  let [userName, setUserName] = useState("");
+  let userName = localStorage.getItem("userName");
 
   const handleAdminCheck = () => {
     console.log(adminState);
@@ -54,7 +55,6 @@ const BlogDetails = () => {
       });
   }
 
-
   return (
     <div className="blog-details">
       {isPending && <div>Loading...</div>}
@@ -68,6 +68,7 @@ const BlogDetails = () => {
             {handleAdminCheck() && <button style={{ float: "right" }}>Delete all commentaries</button>}
           </form>
          <h1>{blog && blog[0].name}</h1>
+         <h2 className="blog-author">{blog && blog[0].creator}</h2>
          {categories && categories.map((item) => (
                   <h2 key={item.id} id="category">{item.title}</h2>
               ))}
@@ -86,7 +87,7 @@ const BlogDetails = () => {
               ))}
             </div>
           )}
-          <form onSubmit={handleSubmit}>
+          {isRegistered && <form onSubmit={handleSubmit}>
             <h3 style={{ position: "relative", top: "21.5px" }}>
               Write something new...
             </h3>
@@ -96,14 +97,8 @@ const BlogDetails = () => {
               placeholder="Write smth!"
               onChange={(e) => setComment(e.target.value)}
             ></textarea>
-            <textarea
-              required
-              maxLength={20}
-              placeholder="Write your name!!"
-              onChange={(e) => setUserName(e.target.value)}
-            ></textarea>
             <button style={{ position: "relative", top: "-28px" }}>Post</button>
-          </form>
+          </form>}
         </article>
       )}
     </div>

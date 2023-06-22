@@ -8,6 +8,9 @@ function Login() {
   const [loginStatus, setLoginStatus] = useState("");
 
   const handleLogin = () => {
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
     let data = { username: userName, password: userPassword };
     axios
       .post("http://localhost:8800/user-login", {
@@ -21,13 +24,16 @@ function Login() {
         if (response.data[1]) {
           setLoginStatus("Hello, admin " + response.data[0][0].username);
           localStorage.setItem("isAdmin", "true");
+          localStorage.setItem("userName",`${response.data[0][0].username}`);
         }
         if (!response.data[1]) {
           setLoginStatus("Hello, " + response.data[0].username);
+          localStorage.setItem("isAdmin", "false");
+          localStorage.setItem("userName",`${response.data[0].username}`);
         }
       })
       .catch((error) => {
-        alert("Error:", error);
+        console.log("Error:", error);
       });
   };
 
