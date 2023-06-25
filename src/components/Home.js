@@ -2,12 +2,15 @@ import Bloglist from "./Bloglist";
 import useGet from "../hooks/https/useGet";
 
 const Home = () => {
-  const { data: blogs, isPending, error } = useGet("http://localhost:8800/posts");
+  const { data: blogs, isPending, error } = useGet("http://localhost:8800/posts", {headers:
+  {"x-access-token": localStorage.getItem("token"),}});
   return (
     <div className="home">
       {error && <div>{ error }</div>}
       {!error && isPending && <div>Loading...</div>}
-      {blogs && <Bloglist blogs={blogs} title="All Blogs!" />}
+      {localStorage.getItem("token") && blogs !=  "TokenExpiredError: jwt expired" && <Bloglist blogs={blogs} title="All Blogs!" />}
+      {!localStorage.getItem("token") && <h1>You need to Login/Register at first.</h1>}
+      {blogs ==  "TokenExpiredError: jwt expired" && <h1>Your token is expired. Please log out and log in one more time.</h1>}
     </div>
   );
 };

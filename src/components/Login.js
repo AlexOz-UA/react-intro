@@ -24,19 +24,15 @@ function Login() {
         }
         if (response.data.result) {
           setLoginStatus("Hello, admin " + response.data.result2[0].username);
-          localStorage.setItem("isAdmin", "true");
-          localStorage.setItem(
-            "userName",
-            `${response.data.result2[0].username}`
-          );
+          localStorage.setItem("isAdmin", true);
+          localStorage.setItem("userName", `${response.data.result2[0].username}`);
+          localStorage.setItem("token", response.data.token);
         }
         if (!response.data.result) {
           setLoginStatus("Hello, " + response.data.result2[0].username);
-          localStorage.setItem("isAdmin", "false");
-          localStorage.setItem(
-            "userName",
-            `${response.data.result2[0].username}`
-          );
+          localStorage.setItem("isAdmin", false);
+          localStorage.setItem("userName", `${response.data.result2[0].username}`);
+          localStorage.setItem("token", response.data.token);
         }
       })
       .catch((error) => {

@@ -1,13 +1,13 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-const useGet = (url) => {
+const useGet = (url, headers) => {
   const [data, setData] = useState(null);
   const [isPending, setIsPending] = useState(true);
   const [error, setError] = useState(null);
   
   useEffect(() => {
-    axios.get(url)
+    axios.get(url, headers)
       .then((res) => {
         if (res.status !== 200) {
           throw Error("could not fetch data for that resource");

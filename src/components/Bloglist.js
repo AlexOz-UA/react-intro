@@ -2,9 +2,7 @@ import { Link } from 'react-router-dom'
 
 const Bloglist = ({ blogs, title}) => {
 
-  window.onload = function() {
-    localStorage.clear()
-  }
+  console.log(blogs ==  "TokenExpiredError: jwt expired");
 
   return (
     <div className="blog-list">

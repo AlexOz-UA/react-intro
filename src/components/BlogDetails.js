@@ -11,7 +11,9 @@ const BlogDetails = () => {
   const isRegistered = localStorage.getItem("userName");
   const history = useHistory();
   const { id } = useParams();
-  const { data: blog, error, isPending, } = useGet(`http://localhost:8800/post/${id}`);
+  const { data: blog, error, isPending, } = useGet(`http://localhost:8800/post/${id}`, {headers: {
+    "x-access-token": localStorage.getItem("token"), 
+  },});
   const { data: comments } = useGet(`http://localhost:8800/comment/${id}`);
   const { data: categories } = useGetWithData(`http://localhost:8800/categories/${id}`, {title: blog && blog[0] && blog[0].name});
 
