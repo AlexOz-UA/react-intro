@@ -1,247 +1,252 @@
-@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;600;700&display=swap');
 
-* {
-  margin: 0;
-  font-family: "Quicksand";
-  color: #333;
-}
+  * {
+    margin: 0;
+    font-family: "Quicksand";
+    color: #333;
+  }
 
-#root button:hover{
-  background-color: #c12353;
-  cursor: pointer;
-}
+  #root button:hover{
+    background-color: #c12353;
+    cursor: pointer;
+  }
 
-.navbar {
-  padding: 20px;
-  display: flex;
-  align-items: center;
-  max-width: 650px;
-  margin: 0 auto;
-  border-bottom: 1.5px solid #f2f2f2;
-}
-.navbar h1 {
-  color: #f1356d;
-}
-.navbar .links {
-  color: black;
-  margin-left: auto;
-}
-.navbar a {
-  margin-left: 16px;
-  text-decoration: none;
-  padding: 6px;
-}
-.navbar a:hover {
-  color: #f1356d;
-}
-.content {
-  max-width: 600px;
-  margin: 40px auto;
-  padding: 20px;
-}
+  .navbar {
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    max-width: 650px;
+    margin: 0 auto;
+    border-radius: 15px;
+    border: 1px solid #f1356d;
+  }
+  .navbar h1 {
+    color: #f1356d;
+  }
+  .navbar .links {
+    color: black;
+    margin-left: auto;
+  }
+  .navbar a {
+    margin-left: 16px;
+    text-decoration: none;
+    padding: 6px;
+  }
+  .navbar a:hover {
+    color: #f1356d;
+  }
+  .content {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 20px;
+  }
 
-.blog-preview {
-  padding: 10px 16px;
-  margin: 20px 0;
-  border-bottom: 1px solid #fafafa;
-}
-.blog-preview:hover {
-  box-shadow: 1px 3px 5px rgba(0,0,0,0.1);
-}
-.blog-preview h2 {
-  font-size: 20px;
-  color: #f1356d;
-  margin-bottom: 8px;
-}
-.blog-preview a{
-  text-decoration: none;
-}
+  .main-title{
+   text-align: center; 
+  }
 
-.blog-details h1 {
-  font-size: 25px;
-  color: #f1356d;
-  margin-bottom: 10px;
-  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-}
-.blog-details h2 {
-  font-size: 20px;
-  color: #f1356d;
-  margin-bottom: 10px;
-}
-.blog-details .blog-author {
-  font-family:"Ubuntu"; 
-  font-size: 20px;
-  color: #282828;
-  margin-bottom: 10px;
-}
-.blog-details h3 {
-  font-size: 15px;
-  color: #f1356d;
-  margin-bottom: 10px;
-  float: left;
-}
-.blog-details #comment {
-  width: 100%;
-  padding: 6px 10px;
-  margin: 10px 0;
-  border: 3px solid #ddd;
-  box-sizing: border-box;
-  display: block;
-  list-style-type: none;
-}
-.blog-details textarea{
-  padding: 6px 10px;
-  margin: 10px 0;
-  border: 1px solid #ddd;
-  box-sizing: border-box;
-}
-.blog-details button {
-  background: #f1356d;
-  color: #fff;
-  border: 0;
-  padding: 8px;
-  border-radius: 8px;
-  cursor: pointer;
-}
-.blog-body {
-  font-size: x-large;
-  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-  margin-bottom: 15px;
-}
-.navbar button {
-  background: #f1356d;
-  color: #fff;
-  border: 0;
-  padding: 8px;
-  border-radius: 8px;
-  cursor: pointer;
-}
+  .blog-preview {
+    padding: 10px 16px;
+    margin: 20px 0;
+    border-bottom: 1px solid #fafafa;
+  }
+  .blog-preview:hover {
+    box-shadow: 1px 3px 5px rgba(0,0,0,0.1);
+  }
+  .blog-preview h2 {
+    font-size: 20px;
+    color: #f1356d;
+    margin-bottom: 8px;
+  }
+  .blog-preview a{
+    text-decoration: none;
+  }
 
-.create {
-  max-width: 400px;
-  margin: 0 auto;
-  text-align: center;
-}
-.create label {
-  text-align: left;
-  display: block;
-}
-.create h2 {
-  font-size: 20px;
-  color: #f1356d;
-  margin-bottom: 30px;
-}
-.create input, .create textarea, .create select {
-  width: 100%;
-  padding: 6px 10px;
-  margin: 10px 0;
-  border: 1px solid #ddd;
-  box-sizing: border-box;
-  display: block;
-}
-.create button {
-  background: #f1356d;
-  color: #fff;
-  border: 0;
-  padding: 8px;
-  border-radius: 8px;
-  cursor: pointer;
-}
-.login {
-  max-width: 400px;
-  margin: 0 auto;
-  text-align: center;
-}
-.login h2 {
-  font-size: 20px;
-  color: #f1356d;
-  margin-bottom: 30px;
-}
-.login label {
-  text-align: left;
-  display: block;
-}
-.login input {
-  width: 100%;
-  padding: 6px 10px;
-  margin: 10px 0;
-  border: 1px solid #ddd;
-  box-sizing: border-box;
-  display: block;
-}
-.login button {
-  background: #f1356d;
-  color: #fff;
-  border: 0;
-  padding: 8px;
-  border-radius: 8px;
-  cursor: pointer;
-}
-.admin-page h1{
-  font-size: 20px;
-  color: #f1356d;
-  margin-bottom: 8px;
-}
-.admin-page button{
-  background: #f1356d;
-  color: #fff;
-  border: 0;
-  padding: 8px;
-  border-radius: 8px;
-  cursor: pointer;
-}
-.blog-categories p{
-  width: 100%;
-  padding: 6px 10px;
-  margin: 10px 0;
-  border: 3px solid #ddd;
-  box-sizing: border-box;
-  display: block;
-  list-style-type: none;
-}
+  .blog-details h1 {
+    font-size: 25px;
+    color: #f1356d;
+    margin-bottom: 10px;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  }
+  .blog-details h2 {
+    font-size: 20px;
+    color: #f1356d;
+    margin-bottom: 10px;
+  }
+  .blog-details .blog-author {
+    font-family:"Ubuntu"; 
+    font-size: 20px;
+    color: #282828;
+    margin-bottom: 10px;
+  }
+  .blog-details h3 {
+    font-size: 15px;
+    color: #f1356d;
+    margin-bottom: 10px;
+    float: left;
+  }
+  .blog-details #comment {
+    width: 100%;
+    padding: 6px 10px;
+    margin: 10px 0;
+    border: 3px solid #ddd;
+    box-sizing: border-box;
+    display: block;
+    list-style-type: none;
+  }
+  .blog-details textarea{
+    padding: 6px 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+  }
+  .blog-details button {
+    background: #f1356d;
+    color: #fff;
+    border: 0;
+    padding: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  .blog-body {
+    font-size: x-large;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    margin-bottom: 15px;
+  }
+  .navbar button {
+    background: #f1356d;
+    color: #fff;
+    border: 0;
+    padding: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
 
-#category {
-  display: inline-block;
-  padding: 6px 12px;
-  background-color: #f1356d;
-  color: #fff;
-  font-size: 14px;
-  border-radius: 20px;
-  margin-right: 8px;
-  font-family: "Poppins";
-  text-transform: uppercase;
-  transition: background-color 0.3s ease-in-out;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
+  .create {
+    max-width: 400px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .create label {
+    text-align: left;
+    display: block;
+  }
+  .create h2 {
+    font-size: 20px;
+    color: #f1356d;
+    margin-bottom: 30px;
+  }
+  .create input, .create textarea, .create select {
+    width: 100%;
+    padding: 6px 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    display: block;
+  }
+  .create button {
+    background: #f1356d;
+    color: #fff;
+    border: 0;
+    padding: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  .login {
+    max-width: 400px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .login h2 {
+    font-size: 20px;
+    color: #f1356d;
+    margin-bottom: 30px;
+  }
+  .login label {
+    text-align: left;
+    display: block;
+  }
+  .login input {
+    width: 100%;
+    padding: 6px 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    display: block;
+  }
+  .login button {
+    background: #f1356d;
+    color: #fff;
+    border: 0;
+    padding: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  .admin-page h1{
+    font-size: 20px;
+    color: #f1356d;
+    margin-bottom: 8px;
+  }
+  .admin-page button{
+    background: #f1356d;
+    color: #fff;
+    border: 0;
+    padding: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  .blog-categories p{
+    width: 100%;
+    padding: 6px 10px;
+    margin: 10px 0;
+    border: 3px solid #ddd;
+    box-sizing: border-box;
+    display: block;
+    list-style-type: none;
+  }
 
-#category:hover {
-  background-color: #ce2256;
-  cursor: pointer;
-}
-.footer {
-  width: 650px;
-  margin: 100px 0px 0px 0px;
-  padding: 20px;
-  display: table;
-  text-align: center;
-  margin-left: auto;
-  margin-right: auto;
-  text-align: center;
-  font-size: 20px;
-  border-top: 1.5px solid #f2f2f2;
-}
+  #category {
+    display: inline-block;
+    padding: 6px 12px;
+    background-color: #f1356d;
+    color: #fff;
+    font-size: 14px;
+    border-radius: 20px;
+    margin-right: 8px;
+    font-family: "Poppins";
+    text-transform: uppercase;
+    transition: background-color 0.3s ease-in-out;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
 
-.footer-text {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+  #category:hover {
+    background-color: #ce2256;
+    cursor: pointer;
+  }
+  .footer {
+    width: 650px;
+    margin: 100px 0px 0px 0px;
+    padding: 20px;
+    display: table;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    font-size: 20px;
+    border-top: 0.5px solid #282828;
+  }
 
-.footer-icon {
-  display: inline-block;
-  width: 30px;
-  height: 30px;
-  margin: 0 5px;
-}
+  .footer-text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .footer-icon {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    margin: 0 5px;
+  }

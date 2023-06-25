@@ -23,8 +23,8 @@ const Navbar = () => {
       <div className="links">
         <Link to="/">Home</Link>
         {isRegistered && <Link to="/create">New Blog</Link>}
-        <Link to="/register">Register</Link>
-        {!isRegistered && <Link to="/login">Login</Link>}
+        {!isRegistered && <Link to="/register">Register</Link>}        
+         {!isRegistered && <Link to="/login">Login</Link>}
         {handleAdminCheck() && <Link to="/adminpanel">Admin</Link>}
         {isRegistered && (
             <button style={{ marginLeft: "23px" }} onClick={handleLogoutAction}>Logout</button>

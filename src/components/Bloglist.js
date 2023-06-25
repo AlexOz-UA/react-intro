@@ -8,7 +8,7 @@ const Bloglist = ({ blogs, title}) => {
 
   return (
     <div className="blog-list">
-        <h2>{ title }</h2>
+        <h2 className='main-title'>{ title }</h2>
       {blogs && blogs.map((blog) => (
         <div className="blog-preview" key={blog.id}>
           <Link to={`/blogs/${blog.id}`}>
