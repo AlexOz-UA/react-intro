@@ -10,7 +10,6 @@ import Footer from "./Footer";
 import Register from "./Register";
 
 function App() {
-
   return (
     <Router>
       <div className="App">

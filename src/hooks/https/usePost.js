@@ -6,9 +6,10 @@ const usePost = (url, postData) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    axios.post(url, {
+    axios
+      .post(url, {
         name: postData.title,
-        category: postData.category 
+        category: postData.category,
       })
       .then((res) => {
         if (res.status !== 200) {
@@ -19,8 +20,8 @@ const usePost = (url, postData) => {
         return JSON.stringify(res);
       })
       .catch((err) => {
-          setError(err.message);
-          alert(error);
+        setError(err.message);
+        alert(error);
       });
 
     return;

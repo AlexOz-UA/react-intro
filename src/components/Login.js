@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 
 function Login() {
+  
   const [userName, setUsername] = useState("");
   const [userPassword, setPassword] = useState("");
   const isRegistered = localStorage.getItem("userName");
@@ -22,16 +23,22 @@ function Login() {
           setLoginStatus(response.data.message);
           return;
         }
-        if (response.data.result) {
-          setLoginStatus("Hello, admin " + response.data.result2[0].username);
-          localStorage.setItem("isAdmin", true);
-          localStorage.setItem("userName", `${response.data.result2[0].username}`);
+        if (response.data.isAdmin === true) {
+          setLoginStatus("Hello, admin " + response.data.userInfo[0].username);
+          localStorage.setItem("isAdmin", response.data.isAdmin);
+          localStorage.setItem(
+            "userName",
+            `${response.data.userInfo[0].username}`
+          );
           localStorage.setItem("token", response.data.token);
         }
-        if (!response.data.result) {
-          setLoginStatus("Hello, " + response.data.result2[0].username);
-          localStorage.setItem("isAdmin", false);
-          localStorage.setItem("userName", `${response.data.result2[0].username}`);
+        if (!response.data.isAdmin === true) {
+          setLoginStatus("Hello, " + response.data.userInfo[0].username);
+          localStorage.setItem("isAdmin", response.data.isAdmin);
+          localStorage.setItem(
+            "userName",
+            `${response.data.userInfo[0].username}`
+          );
           localStorage.setItem("token", response.data.token);
         }
       })
@@ -71,7 +78,6 @@ function Login() {
           <button onClick={handleLogin}>Log In</button>
 
           <h1>{loginStatus}</h1>
-          
         </div>
       )}
       {isRegistered && (
