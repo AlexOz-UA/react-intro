@@ -4,6 +4,7 @@ import jsIcon from "../images/js-icon.png";
 import htmlIcon from "../images/html-icon.png";
 import cssIcon from "../images/css-icon.png";
 import bootstrapIcon from "../images/bootstrap-icon.png";
+import jwtIcon from "../images/jwt-icon.svg";
 
 const Footer = (props) => {
   
@@ -21,6 +22,7 @@ const Footer = (props) => {
             alt="Bootstrap Icon"
             className="footer-icon"
           />
+          <img src={jwtIcon} alt="JWT icon" className="footer-icon" />
         </div>
         <div className="footer-text">
           <span>

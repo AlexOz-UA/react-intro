@@ -17,7 +17,7 @@ const Home = () => {
       {!error && isPending && <div>Loading...</div>}
       {localStorage.getItem("token") &&
         blogs !== "TokenExpiredError: jwt expired" && (
-          <Bloglist blogs={blogs} title="All Blogs!" />
+          <Bloglist />
         )}
       {!localStorage.getItem("token") && (
         <h1 style={{ textAlign: "center" }}>
