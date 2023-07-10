@@ -1,12 +1,10 @@
 import { Link } from "react-router-dom";
 import useGet from "../hooks/https/useGet";
 import axios from "axios";
-import { useState } from "react";
 
 const Bloglist = () => {
   const { data: categories } = useGet("http://localhost:8800/categories");
   const title = localStorage.getItem("categoryTitle");
-  let key = "";
   if(!localStorage.getItem("categoryTitle")) localStorage.setItem("categoryTitle", "Blogs with category: All blogs")
   const titleClear = localStorage.getItem("categoryTitle").slice(20);
   let { data: blogs } = useGet("http://localhost:8800/posts", {
@@ -95,7 +93,6 @@ const Bloglist = () => {
         <option value="All blogs">All blogs</option>
         {categories &&
           categories.map((item) => {
-            key = item.id;
             return (
               <option value={`${item.title},${item.id}`} key={item.id}>
                 {item.title}
