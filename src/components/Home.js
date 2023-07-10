@@ -2,7 +2,7 @@ import Bloglist from "./Bloglist";
 import useGet from "../hooks/https/useGet";
 
 const Home = () => {
-  
+
   const {
     data: blogs,
     isPending,
