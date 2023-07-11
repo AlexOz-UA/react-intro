@@ -5,19 +5,32 @@ import axios from "axios";
 const Bloglist = () => {
   const { data: categories } = useGet("http://localhost:8800/categories");
   const title = localStorage.getItem("categoryTitle");
-  if(!localStorage.getItem("categoryTitle")) localStorage.setItem("categoryTitle", "Blogs with category: All blogs")
+  if (!localStorage.getItem("categoryTitle"))
+    localStorage.setItem("categoryTitle", "Blogs with category: All blogs");
   const titleClear = localStorage.getItem("categoryTitle").slice(20);
   let { data: blogs } = useGet("http://localhost:8800/posts", {
     headers: { "x-access-token": localStorage.getItem("token") },
   });
 
-  const handleCategoryChange = async (e) => {
-    const selectedValue = e.target.value; // The selected value (title and id)
-    const selectedId = selectedValue.split(',')[1];
-    const selectedName = selectedValue.split(',')[0]
-    try {
-      console.log(e.target.textContent);
+  const handleSearch = (e) => {
+    localStorage.setItem("filteredBlogs", "");
+    const searchBarValue = e.target.value;
+    axios.post("http://localhost:8800/search-bar", { data: {searchBar: searchBarValue}}).then((res)=>{
+      if (res.status !== 200) {
+        throw new Error("Could not fetch data for that resource");
+      }
+      localStorage.setItem("searchedBlogs", JSON.stringify(res.data));
+      console.log(res.data);
+      return JSON.stringify(res.data);
+    })
+  }
 
+  const handleCategoryChange = async (e) => {
+    localStorage.setItem("searchedBlogs", ""); 
+    const selectedValue = e.target.value;
+    const selectedId = selectedValue.split(",")[1];
+    const selectedName = selectedValue.split(",")[0];
+    try {
       if (e.target.value === "All blogs") {
         const res = await axios.get("http://localhost:8800/posts", {
           headers: { "x-access-token": localStorage.getItem("token") },
@@ -68,7 +81,8 @@ const Bloglist = () => {
     window.location.reload();
   };
 
-  blogs = JSON.parse(localStorage.getItem("filteredBlogs"));
+  if(localStorage.getItem("filteredBlogs") !== "") blogs = JSON.parse(localStorage.getItem("filteredBlogs"));
+  if(localStorage.getItem("searchedBlogs") !== "") blogs = JSON.parse(localStorage.getItem("searchedBlogs"));
   console.log(blogs);
 
   return (
@@ -100,6 +114,12 @@ const Bloglist = () => {
             );
           })}
       </select>
+      <form>
+      <div style={{ textAlign: "center", padding:"0px 0px 0px 0px" }}>
+        <input type="text" onChange={(e) => handleSearch(e)} maxLength={25} placeholder="Search..." />
+      </div>
+      <button>Search</button>
+      </form>
       {blogs &&
         blogs.map((blog) => (
           <div className="blog-preview" key={blog.id}>
