@@ -2,9 +2,9 @@ import { useState } from "react";
 import axiosPost from "../helpFuncs/axiosPost";
 import { useHistory } from "react-router-dom";
 import useGet from "../hooks/https/useGet";
+import { Redirect } from "react-router-dom";
 
-const Create = () => {
-  
+const Create = () => {  
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [isPending, setIsPending] = useState(false);
@@ -13,6 +13,8 @@ const Create = () => {
   const isRegistered = localStorage.getItem("userName");
   const { data: categories } = useGet("http://localhost:8800/categories");
   let creator = localStorage.getItem("userName");
+
+  if(!isRegistered) {return <Redirect to='/login' />}
 
   const handleSelectChange = (event) => {
     const options = event.target.options;
@@ -41,7 +43,7 @@ const Create = () => {
 
   return (
     <div className="create">
-      {isRegistered && (
+      (
         <div>
           <h2>Add a new Blog</h2>
           <form onSubmit={HandleSubmit}>
@@ -72,42 +74,7 @@ const Create = () => {
           </form>
           {isPending && <button disabled>Adding blog...</button>}
         </div>
-      )}
-
-      {!isRegistered && (
-        <div>
-          <h2>Add a new Blog</h2>
-          <form onSubmit={HandleSubmit}>
-            <label>Blog title:</label>
-            <input
-              maxLength={25}
-              type="text"
-              required
-              disabled
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            />
-            <label>Blog body:</label>
-            <textarea
-              maxLength={1000}
-              required
-              disabled
-              value={body}
-              onChange={(e) => setBody(e.target.value)}
-            ></textarea>
-            <select onChange={handleSelectChange} multiple required disabled>
-              {categories &&
-                categories.map((item) => (
-                  <option key={item.id} value={item.id}>
-                    {item.title}
-                  </option>
-                ))}
-            </select>
-            {!isPending && <button disabled>Add blog</button>}
-          </form>
-          {isPending && <button disabled>Adding blog...</button>}
-        </div>
-      )}
+      )
     </div>
   );
 };

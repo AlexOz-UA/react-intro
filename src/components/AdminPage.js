@@ -3,6 +3,7 @@ import useGet from "../hooks/https/useGet";
 import axiosPost from "../helpFuncs/axiosPost";
 import axios from "axios";
 import axiosDelete from "../helpFuncs/axiosDelete";
+import { Redirect } from "react-router-dom";
 
 const AdminPage = (props) => {
 
@@ -46,6 +47,8 @@ const AdminPage = (props) => {
       return false;
     }
   };
+
+  if(!handleAdminCheck()){ alert("You have no admin access."); return <Redirect to='/login' />}
 
   return (
     <div>

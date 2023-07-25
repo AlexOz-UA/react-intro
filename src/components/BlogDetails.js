@@ -1,13 +1,13 @@
 import { useParams, useHistory } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import useGet from "../hooks/https/useGet";
 import useGetWithData from "../hooks/https/useGetWithData";
 import axios from "axios";
 import axiosDelete from "../helpFuncs/axiosDelete";
 import axiosPost from "../helpFuncs/axiosPost";
+import axiosGet from "../helpFuncs/axiosGet";
 
 const BlogDetails = () => {
-  
   const adminState = localStorage.getItem("isAdmin");
   const isRegistered = localStorage.getItem("userName");
   const history = useHistory();
@@ -26,11 +26,13 @@ const BlogDetails = () => {
       "x-access-token": localStorage.getItem("token"),
     },
   });
-  const { data: categories } = useGetWithData(
+  const { data: categories } = useGet(
     `http://localhost:8800/categories/${id}`,
-    { headers: { "x-access-token": localStorage.getItem("token") } },
-    { title: blog && blog[0] && blog[0].name }
-  );
+    { headers: { "x-access-token": localStorage.getItem("token") } });
+  const user_id = localStorage.getItem("userId");
+  const {data: like} = useGet(`http://localhost:8800/post/is-liked/${id}/${user_id}`);
+  const {data: likesCount} = useGet(`http://localhost:8800/post/likes-count/${id}`);
+  if(likesCount) console.log(likesCount[0].count);
 
   let [newComment, setComment] = useState("");
   let userName = localStorage.getItem("userName");
@@ -70,6 +72,19 @@ const BlogDetails = () => {
       });
   }
 
+  const handleLikeClick = () => {
+    if (like.likeStatus === true) {
+      window.location.reload()
+      axiosPost(`http://localhost:8800/post/unlike/${id}`, {
+        user_id: user_id,
+      });
+    }
+    if (like.likeStatus === false) {
+      window.location.reload()
+      axiosPost(`http://localhost:8800/post/like/${id}`, { user_id: user_id });
+    }
+  };
+
   return (
     <div className="blog-details">
       {localStorage.getItem("userName") && (
@@ -98,6 +113,15 @@ const BlogDetails = () => {
                     {item.title}
                   </h2>
                 ))}
+              {like && likesCount && <span
+                className="fa fa-thumbs-up button-like"
+                style={{
+                  color: like.likeStatus ? "red" : "#282828",
+                }}
+                onClick={handleLikeClick}
+              >
+                <span style={{ paddingLeft: "5px" }}>{ likesCount[0].count }</span>
+              </span>}
               <p className="blog-body">{blog && blog[0].body}</p>
               <label>Comment section:</label>
               {comments && (

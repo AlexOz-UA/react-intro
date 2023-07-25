@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { Redirect } from "react-router-dom";
 
 function Login() {
   
@@ -30,6 +31,10 @@ function Login() {
             "userName",
             `${response.data.userInfo[0].username}`
           );
+          localStorage.setItem(
+            "userId",
+            `${response.data.userInfo[0].id}`
+          );
           localStorage.setItem("token", response.data.token);
         }
         if (!response.data.isAdmin === true) {
@@ -38,6 +43,10 @@ function Login() {
           localStorage.setItem(
             "userName",
             `${response.data.userInfo[0].username}`
+          );
+          localStorage.setItem(
+            "userId",
+            `${response.data.userInfo[0].id}`
           );
           localStorage.setItem("token", response.data.token);
         }

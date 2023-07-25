@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axiosPost from "../helpFuncs/axiosPost";
+import { Redirect } from "react-router-dom"
 
 function Register() {
   

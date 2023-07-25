@@ -11,7 +11,7 @@
   #root button:hover{
     background-color: #c12353;
     cursor: pointer;
-  }
+  } 
 
   .navbar {
     padding: 20px;
@@ -255,4 +255,11 @@
     width: 30px;
     height: 30px;
     margin: 0 5px;
+  }
+  .blog-details .button-like{
+    color: #282828;
+    background-color: #fff;
+  }
+  .button-like:hover{  
+    cursor: pointer;
   }
