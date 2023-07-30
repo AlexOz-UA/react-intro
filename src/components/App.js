@@ -8,7 +8,7 @@ import Login from "./Login";
 import AdminPage from "./AdminPage";
 import Footer from "./Footer";
 import Register from "./Register";
-import Bloglistliked from "./Bloglistliked";
+import Bloglistsaved from "./Bloglistsaved";
 
 function App() {
   return (
@@ -36,7 +36,7 @@ function App() {
               <AdminPage />
             </Route>
             <Route path="/blogs-liked">
-              <Bloglistliked />
+              <Bloglistsaved />
             </Route>
             <Route path="*">
               <NotFound />

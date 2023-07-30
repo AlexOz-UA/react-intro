@@ -24,7 +24,7 @@ const Navbar = () => {
       <div className="links">
         <Link to="/">Home</Link>
         {isRegistered && <Link to="/create">New Blog</Link>}
-        {isRegistered && <Link to="/blogs-liked">Liked Blogs</Link>}
+        {isRegistered && <Link to="/blogs-liked">Saved Blogs</Link>}
         {!isRegistered && <Link to="/register">Register</Link>}
         {!isRegistered && <Link to="/login">Login</Link>}
         {handleAdminCheck() && <Link to="/adminpanel">Admin</Link>}

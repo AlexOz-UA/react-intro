@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Redirect } from "react-router-dom";
 
 function Login() {
   
@@ -19,7 +18,6 @@ function Login() {
         data,
       })
       .then((response) => {
-        console.log(JSON.stringify(response));
         if (response.data.message) {
           setLoginStatus(response.data.message);
           return;
@@ -52,7 +50,7 @@ function Login() {
         }
       })
       .catch((error) => {
-        console.log("Error:", error);
+        console.error("There is an error: " + error);
       });
   };
 

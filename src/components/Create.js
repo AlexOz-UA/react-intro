@@ -43,7 +43,6 @@ const Create = () => {
 
   return (
     <div className="create">
-      (
         <div>
           <h2>Add a new Blog</h2>
           <form onSubmit={HandleSubmit}>
@@ -61,6 +60,7 @@ const Create = () => {
               required
               value={body}
               onChange={(e) => setBody(e.target.value)}
+              style={{height: "150px"}}
             ></textarea>
             <select onChange={handleSelectChange} multiple required>
               {categories &&
@@ -74,7 +74,6 @@ const Create = () => {
           </form>
           {isPending && <button disabled>Adding blog...</button>}
         </div>
-      )
     </div>
   );
 };

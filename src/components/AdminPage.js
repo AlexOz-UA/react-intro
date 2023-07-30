@@ -36,7 +36,7 @@ const AdminPage = (props) => {
         console.log(response);
       })
       .catch((error) => {
-        console.log(error);
+        console.error("There is an error: " + error);
       });
   };
 

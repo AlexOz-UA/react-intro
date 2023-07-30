@@ -10,67 +10,119 @@ const Bloglist = () => {
   if (!localStorage.getItem("categoryTitle"))
     localStorage.setItem("categoryTitle", "Blogs with category: All blogs");
   const titleClear = localStorage.getItem("categoryTitle").slice(20);
-  let { data: blogs } = useGet(`http://localhost:8800/posts`, {
-    headers: { "x-access-token": localStorage.getItem("token") },
-  });
   const [stateBlogs, setStateBlogs] = useState("");
   const isMounted = useRef(false);
-  // const likeCounts = {};
-  // const blogsIds = [];
   const [buttonClassName, setButtonClassName] = useState("");
-  // if(blogs){
-  //   blogs.forEach((blog) => {
-  //     blogsIds.push(blog.id);
-  //   })
-  //   blogs.map((blog) => {
-  //     axiosGet(`http://localhost:8800/post/likes-count/${blog.id}`)
-  //   })
-  //   console.log(blogsIds);
-  // }
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const itemsPerPage = 5;
+  let { sortedBlogs: blogs } = useGet(`http://localhost:8800/pagination?page=${currentPage}&limit=${itemsPerPage}`, {
+    headers: { "x-access-token": localStorage.getItem("token") },
+  });
+
+  const fetchData = async () => {
+    if (
+      localStorage.getItem("filteredBlogs") &&
+      localStorage.getItem("categoryTitle") !== "Blogs with category: All blogs"
+    ) {
+      try {
+        const response = await axios.post(
+          `http://localhost:8800/pagination/categories?page=${currentPage}&limit=${itemsPerPage}`,
+          { data: { id: localStorage.getItem("selectedOptions") } }
+        );
+        setStateBlogs(response.data.sortedBlogs);
+        console.log("cycle1");
+        setTotalPages(Math.ceil(response.data.totalItems / itemsPerPage));
+        return;
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+
+    if (
+      localStorage.getItem("filteredBlogs") === "" &&
+      localStorage.getItem("searchedBlogs") !== ""
+    ) {
+      const parsedPosts = JSON.parse(localStorage.getItem("searchedBlogs"));
+      let selectedOptions = [];
+      parsedPosts.forEach((element) => {
+        selectedOptions.push(element.id);
+      });
+      try {
+        const response = await axios.post(
+          `http://localhost:8800/pagination/search?page=${currentPage}&limit=${itemsPerPage}`,
+          { data: { postIds: selectedOptions } }
+        );
+        setStateBlogs(response.data.sortedBlogs);
+        console.log("cycle2");
+        setTotalPages(Math.ceil(response.data.totalItems / itemsPerPage));
+        return;
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+
+    if (!localStorage.getItem("popularBlogs") && localStorage.getItem("popularBlogs") === "") {
+      try {
+        const response = await axios.get(
+          `http://localhost:8800/pagination?page=${currentPage}&limit=${itemsPerPage}`
+        );
+        setStateBlogs(response.data.sortedBlogs);
+        console.log("cycle3");
+        setTotalPages(Math.ceil(response.data.totalItems / itemsPerPage));
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    handlePostSorting();
+    setTimeout(() => {
+      fetchData();
+    }, 100);
+  }, [currentPage]);
+
+  const handlePageChange = (pageNumber) => {
+    setTimeout(() => {
+      fetchData();
+    }, 100);
+    handlePostSorting();
+    setCurrentPage(pageNumber);
+  };
 
   useEffect(() => {
     if (!isMounted.current) {
-      console.log("hello!");
       try {
-        const blogsData = axiosGet(`http://localhost:8800/posts`, {
+        let blogsData = axiosGet(`http://localhost:8800/pagination?page=${currentPage}&limit=${itemsPerPage}`, {
           headers: { "x-access-token": localStorage.getItem("token") },
         });
         blogsData.then((data) => {
-          console.log(data);
-          setStateBlogs(data);
+          setStateBlogs(data.sortedBlogs);
+          setTotalPages(Math.ceil(data.totalItems / itemsPerPage));
+          fetchData();
         });
       } catch (error) {
-        console.log(error);
+        console.error("There is an error: " + error);
       }
       isMounted.current = true;
     }
   }, [blogs]);
 
-  // useEffect(() => {
-  //   if (localStorage.getItem("filteredBlogs") !== "")
-  //     setBlogs(JSON.parse(localStorage.getItem("filteredBlogs")));
-  //   if (localStorage.getItem("searchedBlogs") !== "")
-  //     setBlogs(JSON.parse(localStorage.getItem("searchedBlogs")));
-  // }, [
-  //   blogs,
-  //   localStorage.getItem("searchedBlogs"),
-  //   localStorage.getItem("Blogs"),
-  // ]);
   const handleBlogChange = () => {
-  if (localStorage.getItem("filteredBlogs") !== ""){
-    blogs = (JSON.parse(localStorage.getItem("filteredBlogs")));
-    setStateBlogs(blogs)
-    console.log(blogs);
-  }
-  if (localStorage.getItem("searchedBlogs") !== ""){
-    blogs = (JSON.parse(localStorage.getItem("searchedBlogs")));
-    setStateBlogs(blogs)
-    console.log(blogs);
-  }
-  }
-    
+    if (localStorage.getItem("filteredBlogs") !== "") {
+      blogs = JSON.parse(localStorage.getItem("filteredBlogs"));
+      setStateBlogs(blogs);
+    }
+    if (localStorage.getItem("searchedBlogs") !== "") {
+      blogs = JSON.parse(localStorage.getItem("searchedBlogs"));
+      setStateBlogs(blogs);
+    }
+  };
+
   const handleSearch = (e) => {
     localStorage.setItem("filteredBlogs", "");
+    localStorage.setItem("popularBlogs", "");
     const searchBarValue = e.target.value;
     axios
       .post("http://localhost:8800/search-bar", {
@@ -81,7 +133,7 @@ const Bloglist = () => {
           throw new Error("Could not fetch data for that resource");
         }
         localStorage.setItem("searchedBlogs", JSON.stringify(res.data));
-        console.log(res.data);
+        fetchData();
         handleBlogChange();
         return JSON.stringify(res.data);
       });
@@ -89,9 +141,33 @@ const Bloglist = () => {
 
   const handleCategoryChange = async (e) => {
     localStorage.setItem("searchedBlogs", "");
-    const selectedId =
-      e.target[e.target.selectedIndex].getAttribute("data-category");
-    const selectedName = e.target.value;
+    localStorage.setItem("popularBlogs", "");
+    const selectElement = e.target;
+    const options = selectElement.options;
+    const selectedOptions = [];
+    const selectedNames = [];
+    const allCategoriesIds = [];
+
+    categories.forEach((element) => {
+      allCategoriesIds.push(element.id);
+    });
+
+    for (let i = 0; i < options.length; i++) {
+      if (options[i].selected) {
+        const option = options[i];
+        const selectedId = option.getAttribute("data-category");
+        selectedOptions.push(selectedId);
+      }
+    }
+
+    for (let i = 0; i < options.length; i++) {
+      if (options[i].selected) {
+        const option = options[i];
+        const selectedName = option.value;
+        selectedNames.push(selectedName);
+      }
+    }
+    localStorage.setItem("selectedOptions", selectedOptions);
 
     try {
       if (e.target.value === "All blogs") {
@@ -106,54 +182,62 @@ const Bloglist = () => {
         localStorage.setItem("filteredBlogs", JSON.stringify(res.data));
         localStorage.setItem(
           "categoryTitle",
-          "Blogs with category: " + selectedName
+          "Blogs with category: " + selectedNames
         );
-        console.log(res.data);
-        handleBlogChange();
-        if (res.data.length === 0) {
-          localStorage.setItem("categoryTitle", "No blogs with this category.");
-        }
-        return JSON.stringify(res.data);
-      } else {
-        const res = await axios.post(
-          "http://localhost:8800/categories-filter",
-          {
-            data: { id: selectedId },
-          }
-        );
-
-        if (res.status !== 200) {
-          throw new Error("Could not fetch data for that resource");
-        }
-
-        localStorage.setItem("filteredBlogs", JSON.stringify(res.data));
-        localStorage.setItem(
-          "categoryTitle",
-          "Blogs with category: " + selectedName
-        );
-        console.log(res.data);
-        handleBlogChange();
+        localStorage.setItem("selectedOptions", allCategoriesIds);
+        fetchData();
         if (res.data.length === 0) {
           localStorage.setItem("categoryTitle", "No blogs with this category.");
         }
         return JSON.stringify(res.data);
       }
+      const res = await axios.post("http://localhost:8800/categories-filter", {
+        data: { id: selectedOptions },
+      });
+
+      if (res.status !== 200) {
+        throw new Error("Could not fetch data for that resource");
+      }
+
+      localStorage.setItem("filteredBlogs", JSON.stringify(res.data));
+      localStorage.setItem(
+        "categoryTitle",
+        "Blogs with category: " + selectedNames
+      );
+      fetchData();
+      handleBlogChange();
+      if (res.data.length === 0) {
+        localStorage.setItem("categoryTitle", "No blogs with this category.");
+      }
+      return JSON.stringify(res.data);
     } catch (err) {
-      console.log(err);
+      console.error("There is an error: " + err);
     }
   };
 
-  const handlePostSorting = (e) => {
-    if(buttonClassName === ""){
-      setButtonClassName("fa fa-arrow-up")
+  const handlePostSorting = () => {
+    if (buttonClassName === "") {
+      setButtonClassName("fa fa-arrow-up");
+      fetch(`http://localhost:8800/pagination/popular-blogs/${currentPage}/${itemsPerPage}`)
+        .then((response) => response.json())
+        .then((data) => {
+          localStorage.setItem(
+            "popularBlogs",
+            JSON.stringify(data.sortedBlogs)
+          );
+          setStateBlogs(data.sortedBlogs);
+        })
+        .catch((error) => {
+          console.error("Error fetching popular blogs:", error);
+        });
     }
-    if(buttonClassName === "fa fa-arrow-up"){
-      setButtonClassName("fa fa-arrow-down")
+    
+    if (buttonClassName === "fa fa-arrow-up") {
+      setButtonClassName("");
+      localStorage.setItem("popularBlogs", "");
+      fetchData();
     }
-    if(buttonClassName === "fa fa-arrow-down"){
-      setButtonClassName("fa fa-arrow-up")
-    }
-  }
+  };
 
   return (
     <div className="blog-list">
@@ -166,7 +250,9 @@ const Bloglist = () => {
           position: "relative",
           top: "-24px",
           marginLeft: "520px",
+          height: "90px",
         }}
+        multiple
       >
         <option value={titleClear}>
           {localStorage.getItem("categoryTitle") ===
@@ -187,31 +273,50 @@ const Bloglist = () => {
       <div style={{ textAlign: "center", padding: "0px 0px 10px 0px" }}>
         <button
           style={{ textAlign: "center", padding: "0px 0px 0px 0px" }}
-          onClick={(e) => handlePostSorting(e)}
+          onClick={handlePostSorting}
         >
-          Sort by Popularity<a className={buttonClassName} href="#top">{}</a>
+          Sort by Popularity
+          <a className={buttonClassName} href="#top">
+            {}
+          </a>
         </button>
       </div>
       <div style={{ textAlign: "center", padding: "0px 0px 0px 0px" }}>
-          <div style={{ textAlign: "center", padding: "0px 0px 10px 0px" }}>
-            <input
-              type="text"
-              onChange={(e) => handleSearch(e)}
-              maxLength={25}
-              placeholder="Search..."
-            />
-          </div>
+        <div style={{ textAlign: "center", padding: "0px 0px 10px 0px" }}>
+          <input
+            type="text"
+            onChange={(e) => handleSearch(e)}
+            maxLength={25}
+            placeholder="Search..."
+          />
+        </div>
       </div>
       {stateBlogs &&
+        stateBlogs !== "TokenExpiredError: jwt expired" &&
         stateBlogs.map((blog) => (
           <div className="blog-preview" key={blog.id}>
             <Link to={`/blogs/${blog.id}`}>
               <h2 style={{ marginBottom: "5px" }}>{blog.name}</h2>
+              <span className="fa fa-thumbs-up button-like">
+                <span style={{ marginLeft: "5px" }}>{blog.num_likes}</span>
+              </span>
               <h3 style={{ marginBottom: "5px" }}>{blog.creator}</h3>
               <p>{blog.body.substring(0, 20)}...</p>
             </Link>
           </div>
         ))}
+      {stateBlogs === "TokenExpiredError: jwt expired" && <div></div>}
+      <div className="pagination">
+        {Array.from({ length: totalPages }, (_, index) => index + 1).map(
+          (pageNumber) => (
+            <li key={pageNumber}>
+              <button onClick={() => handlePageChange(pageNumber)}>
+                {pageNumber}
+              </button>
+            </li>
+          )
+        )}
+      </div>
     </div>
   );
 };
