@@ -3,9 +3,11 @@ import useGet from "../hooks/https/useGet";
 import axios from "axios";
 import { useEffect, useState, useRef } from "react";
 import axiosGet from "../helpFuncs/axiosGet";
+import Checkbox from "@mui/material/Checkbox";
 
 const Bloglist = () => {
   const { data: categories } = useGet("http://localhost:8800/categories");
+  const [selectedCategories, setSelectedCategories] = useState([]);
   const title = localStorage.getItem("categoryTitle");
   if (!localStorage.getItem("categoryTitle"))
     localStorage.setItem("categoryTitle", "Blogs with category: All blogs");
@@ -16,9 +18,12 @@ const Bloglist = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const itemsPerPage = 5;
-  let { sortedBlogs: blogs } = useGet(`http://localhost:8800/pagination?page=${currentPage}&limit=${itemsPerPage}`, {
-    headers: { "x-access-token": localStorage.getItem("token") },
-  });
+  let { sortedBlogs: blogs } = useGet(
+    `http://localhost:8800/pagination?page=${currentPage}&limit=${itemsPerPage}`,
+    {
+      headers: { "x-access-token": localStorage.getItem("token") },
+    }
+  );
 
   const fetchData = async () => {
     if (
@@ -62,7 +67,10 @@ const Bloglist = () => {
       }
     }
 
-    if (!localStorage.getItem("popularBlogs") && localStorage.getItem("popularBlogs") === "") {
+    if (
+      !localStorage.getItem("popularBlogs") &&
+      localStorage.getItem("popularBlogs") === ""
+    ) {
       try {
         const response = await axios.get(
           `http://localhost:8800/pagination?page=${currentPage}&limit=${itemsPerPage}`
@@ -94,9 +102,12 @@ const Bloglist = () => {
   useEffect(() => {
     if (!isMounted.current) {
       try {
-        let blogsData = axiosGet(`http://localhost:8800/pagination?page=${currentPage}&limit=${itemsPerPage}`, {
-          headers: { "x-access-token": localStorage.getItem("token") },
-        });
+        let blogsData = axiosGet(
+          `http://localhost:8800/pagination?page=${currentPage}&limit=${itemsPerPage}`,
+          {
+            headers: { "x-access-token": localStorage.getItem("token") },
+          }
+        );
         blogsData.then((data) => {
           setStateBlogs(data.sortedBlogs);
           setTotalPages(Math.ceil(data.totalItems / itemsPerPage));
@@ -215,10 +226,24 @@ const Bloglist = () => {
     }
   };
 
+  // const handleCategoryChange = async (e) => {
+  //   if (e.target.checked === false) {
+  //     return
+  //   }
+
+  //   if (e.target.checked === true) {
+  //     const categoryId = e.target.getAttribute("data-category");
+  //     selectedCategories.push({ id: categoryId, title: e.target.value });
+  //     console.log(selectedCategories);
+  //   }
+  // };
+
   const handlePostSorting = () => {
     if (buttonClassName === "") {
       setButtonClassName("fa fa-arrow-up");
-      fetch(`http://localhost:8800/pagination/popular-blogs/${currentPage}/${itemsPerPage}`)
+      fetch(
+        `http://localhost:8800/pagination/popular-blogs/${currentPage}/${itemsPerPage}`
+      )
         .then((response) => response.json())
         .then((data) => {
           localStorage.setItem(
@@ -231,7 +256,7 @@ const Bloglist = () => {
           console.error("Error fetching popular blogs:", error);
         });
     }
-    
+
     if (buttonClassName === "fa fa-arrow-up") {
       setButtonClassName("");
       localStorage.setItem("popularBlogs", "");
@@ -245,13 +270,8 @@ const Bloglist = () => {
       <select
         onChange={(e) => handleCategoryChange(e)}
         name="category-select"
+        className="category-select"
         id="categorySelect"
-        style={{
-          position: "relative",
-          top: "-24px",
-          marginLeft: "520px",
-          height: "90px",
-        }}
         multiple
       >
         <option value={titleClear}>
@@ -270,6 +290,21 @@ const Bloglist = () => {
             );
           })}
       </select>
+      {/* {categories &&
+        categories.map((item) => (
+          <div key={item.id}>
+            <label>
+              <input
+                type="checkbox"
+                value={item.title}
+                data-category={item.id}
+                defaultChecked={false}
+                onChange={handleCategoryChange}
+              />
+              {item.title}
+            </label>
+          </div>
+        ))} */}
       <div style={{ textAlign: "center", padding: "0px 0px 10px 0px" }}>
         <button
           style={{ textAlign: "center", padding: "0px 0px 0px 0px" }}
