@@ -11,8 +11,8 @@ const Footer = (props) => {
   return (
     <div>
       <footer className="footer">
-        <div className="footer-text">
           <span>Made with help of</span>
+          <div className="footer-text">
           <img src={reactIcon} alt="React Icon" className="footer-icon" />
           <img src={jsIcon} alt="JavaScript Icon" className="footer-icon" />
           <img src={htmlIcon} alt="HTML Icon" className="footer-icon" />
