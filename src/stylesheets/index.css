@@ -301,7 +301,6 @@
     align-items: center;
     justify-content: space-between;
     background-color: #333;
-    padding: 10px 20px;
     color: #fff;
   }
   
@@ -312,28 +311,16 @@
   }
   
   .burger-menu-icon {
-    display: none; 
+    opacity: 0; 
     cursor: pointer;
   }
   
   .line {
     width: 30px;
-    height: 3px;
+    height: 2.5px;
     background-color: #fff;
-    margin: 6px 0;
+    margin: 7px 0;
     transition: 0.4s;
-  }
-  
-  .open .line:nth-child(1) {
-    transform: rotate(-45deg) translate(-5px, 6px);
-  }
-  
-  .open .line:nth-child(2) {
-    opacity: 0;
-  }
-  
-  .open .line:nth-child(3) {
-    transform: rotate(45deg) translate(-5px, -6px);
   }
   
   .menu-list {
@@ -387,28 +374,64 @@
     }
   
     .burger-menu-icon {
-      display: block;
+      opacity: 1;
       margin-right: 10px;
+      margin-top: 2px;
+    }
+
+    .burger-menu-icon.open {
+      animation: 1s disappear ease;
+      margin-right: 10px;
+      z-index: 9999;
     }
   
-    .menu-list {
-      display: none;
-    }
+    @keyframes slide {
+      from {
+        top: -50px;
+        opacity: 0;
+      }
+      to{
+        top: 50px;
+        opacity: 1;
+      }
+    }  
   
     .menu-list.open {
-      display: flex;
-      flex-direction:column;
+      animation: 0.6s slide ease-in-out;
+      display: inline-flex;
+      flex-direction: column;
       background-color: #333;
-      padding: 10px;
+      padding: 3%;
       position: absolute;
       top: 50px;
       left: 0;
-      width: 100%;
+      width: 94%;
+      border-radius: 15px;
+    }
+
+    .menu-list.closed{
+      display: none;
+    }
+
+    .navbar {
+      border-right: 0px;
     }
 
     .burger-buttons{
       align-self: flex-end;
       position: relative;
       top: -50px;
+    }
+
+    .line.open:nth-child(1) {
+      transform: rotate(-45deg) translate(-3.5px, 9px);
+    }
+    
+    .line.open:nth-child(2) {
+      opacity: 0;
+    }
+    
+    .line.open:nth-child(3) {
+      transform: rotate(45deg) translate(-5px, -10px);
     }
   }
