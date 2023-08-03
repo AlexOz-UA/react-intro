@@ -1,18 +1,59 @@
 import React, { useState } from "react";
-import axiosPost from "../helpFuncs/axiosPost";
-import { Redirect } from "react-router-dom"
+import axios from "axios";
 
 function Register() {
-  
   const [userName, setUsername] = useState("");
   const [userPassword, setPassword] = useState("");
   const [userEmail, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
   const isRegistered = localStorage.getItem("userName");
 
-  const handleLogin = (e) => {
+  const handleEmailValidation = (e) =>{
+    setEmail(e.target.value)
+    if (!userEmail.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i)) {
+      console.log(e.target);
+      setEmailError("Please enter a valid email address.");
+      return;
+    }
+    setEmailError("")
+    setEmail(e.target.value)
+  }
+
+  const handlePasswordValidation = (e) =>{
+    setPassword(e.target.value)
+    if (!userPassword.match(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])/)) {
+      console.log(e.target);
+      setPasswordError("Your password must contain atleast one letter, number and two special symbols.");
+      return;
+    }
+    setPasswordError("")
+    setPassword(e.target.value)
+  }
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    if (!userEmail.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i)) {
+      console.log(e.target);
+      return;
+    }
+
+    if (userPassword.length < 8 || userPassword.length > 20) {
+      setPasswordError("Password must be between 8 and 20 characters");
+      return;
+    }
     let data = { username: userName, email: userEmail, password: userPassword };
-    axiosPost("http://localhost:8800/user-register", data);
-    alert("The registration was succesful.");
+    setEmailError("")
+    console.log(data);
+    const response = await axios.post("http://localhost:8800/user-register", {
+      data,
+    });
+    if (response.data.message) {
+      setMessage(response.data.message);
+      return;
+    }
+    setMessage("The registration was succesful");
   };
 
   return (
@@ -38,8 +79,9 @@ function Register() {
                 required
                 type="text"
                 value={userEmail}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => handleEmailValidation(e)}
               />
+              <span style={{ color: "red" }}>{emailError}</span>
             </label>
             <br />
             <label>
@@ -50,8 +92,9 @@ function Register() {
                 maxLength={20}
                 type="password"
                 value={userPassword}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => handlePasswordValidation(e)}
               />
+              <span style={{ color: "red" }}>{passwordError}</span>
             </label>
             <br />
             <button>Register</button>
@@ -103,6 +146,7 @@ function Register() {
           </form>
         </div>
       )}
+      {message && <h1>{message}</h1>}
     </div>
   );
 }

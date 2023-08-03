@@ -81,14 +81,10 @@ const Navbar = () => {
             )}
             <div className="burger-buttons">
               {isRegistered && (
-                <li
-                  style={{
-                    marginTop: "15px",
-                    right: "-5px",
-                    position: "relative",
-                  }}
-                >
-                  <button onClick={handleLogoutAction}>Logout</button>
+                <li>
+                  <a id="logout-button" onClick={handleLogoutAction}>
+                    Logout
+                  </a>
                 </li>
               )}
             </div>

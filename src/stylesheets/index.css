@@ -327,19 +327,16 @@
     display: flex;
     list-style: none;
   }
-  
-  .menu-list li {
-    margin-right: 20px;
+
+  #logout-button{
+    border: 1px solid #f1356d;
+    border-radius: 10px;
   }
 
-  .burger-link{
-    position: relative;
-    top: 8px;
-  }
-
-  .burger-buttons{
-    position: relative;
-    top: 3px;
+  #logout-button:hover{
+    color: #fff;
+    cursor: pointer;
+    background-color: #f1356d;
   }
 
   @media only screen and (max-width: 600px) {
