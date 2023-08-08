@@ -226,18 +226,6 @@ const Bloglist = () => {
     }
   };
 
-  // const handleCategoryChange = async (e) => {
-  //   if (e.target.checked === false) {
-  //     return
-  //   }
-
-  //   if (e.target.checked === true) {
-  //     const categoryId = e.target.getAttribute("data-category");
-  //     selectedCategories.push({ id: categoryId, title: e.target.value });
-  //     console.log(selectedCategories);
-  //   }
-  // };
-
   const handlePostSorting = () => {
     if (buttonClassName === "") {
       setButtonClassName("fa fa-arrow-up");
@@ -290,21 +278,6 @@ const Bloglist = () => {
             );
           })}
       </select>
-      {/* {categories &&
-        categories.map((item) => (
-          <div key={item.id}>
-            <label>
-              <input
-                type="checkbox"
-                value={item.title}
-                data-category={item.id}
-                defaultChecked={false}
-                onChange={handleCategoryChange}
-              />
-              {item.title}
-            </label>
-          </div>
-        ))} */}
       <div style={{ textAlign: "center", padding: "0px 0px 10px 0px" }}>
         <button
           style={{ textAlign: "center", padding: "0px 0px 0px 0px" }}

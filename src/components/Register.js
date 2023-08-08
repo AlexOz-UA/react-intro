@@ -13,7 +13,6 @@ function Register() {
   const handleEmailValidation = (e) =>{
     setEmail(e.target.value)
     if (!userEmail.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i)) {
-      console.log(e.target);
       setEmailError("Please enter a valid email address.");
       return;
     }
@@ -23,9 +22,8 @@ function Register() {
 
   const handlePasswordValidation = (e) =>{
     setPassword(e.target.value)
-    if (!userPassword.match(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])/)) {
-      console.log(e.target);
-      setPasswordError("Your password must contain atleast one letter, number and two special symbols.");
+    if (!userPassword.match(/^(?=.*[A-Za-z])(?=.*[!@#$%^&*()])/)) {
+      setPasswordError("Your password must contain atleast one letter, number and a special symbol.");
       return;
     }
     setPasswordError("")
@@ -35,9 +33,15 @@ function Register() {
   const handleLogin = async (e) => {
     e.preventDefault();
     if (!userEmail.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i)) {
-      console.log(e.target);
+      setEmailError("Please enter a valid email address.");
       return;
     }
+
+    if (!userPassword.match(/^(?=.*[A-Za-z])(?=.*[!@#$%^&*()])/)) {
+      setPasswordError("Your password must contain atleast one letter, number and a special symbol.");
+      return;
+    }
+    setPasswordError("")
 
     if (userPassword.length < 8 || userPassword.length > 20) {
       setPasswordError("Password must be between 8 and 20 characters");
