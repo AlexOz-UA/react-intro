@@ -71,14 +71,6 @@ const Create = () => {
             onChange={(e) => setBody(e.target.value)}
             style={{ height: "150px" }}
           ></textarea>
-          {/* <select onChange={handleSelectChange} multiple required>
-              {categories &&
-                categories.map((item) => (
-                  <option key={item.id} value={item.id}>
-                    {item.title}
-                  </option>
-                ))}
-            </select> */}
          <div className="checkbox-container">
             {categories &&
                 categories.map((item) => (
