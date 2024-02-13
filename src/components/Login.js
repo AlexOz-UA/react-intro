@@ -56,8 +56,8 @@ function Login() {
   useEffect(() => {
     if (isRegistered) {
       setTimeout(() => {
-        window.location.reload()
         history.push("/");
+        window.location.reload()
       }, 1000);
     }
   }, [isRegistered, history ]);

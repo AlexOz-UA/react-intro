@@ -6,6 +6,11 @@ import axiosGet from "../helpFuncs/axiosGet";
 import Checkbox from "@mui/material/Checkbox";
 
 const Bloglist = () => {
+
+  window.addEventListener("load", (event) => {
+    handlePostSorting();
+  });
+
   const { data: categories } = useGet("https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/categories");
   const [selectedCategories, setSelectedCategories] = useState([]);
   const title = localStorage.getItem("categoryTitle");
@@ -73,10 +78,9 @@ const Bloglist = () => {
     ) {
       try {
         const response = await axios.get(
-          `https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/pagination?page=${currentPage}&limit=${itemsPerPage}`
+          `https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/pagination/popular-blogs/?page=${currentPage}&limit=${itemsPerPage}`
         );
         setStateBlogs(response.data.sortedBlogs);
-        console.log("cycle3");
         setTotalPages(Math.ceil(response.data.totalItems / itemsPerPage));
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -238,6 +242,7 @@ const Bloglist = () => {
             "popularBlogs",
             JSON.stringify(data.sortedBlogs)
           );
+          console.log(data.sortedBlogs);
           setStateBlogs(data.sortedBlogs);
         })
         .catch((error) => {
