@@ -50,7 +50,7 @@ function Register() {
     let data = { username: userName, email: userEmail, password: userPassword };
     setEmailError("")
     console.log(data);
-    const response = await axios.post("http://localhost:8800/user-register", {
+    const response = await axios.post("https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/user-register", {
       data,
     });
     if (response.data.message) {

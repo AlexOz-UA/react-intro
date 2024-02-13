@@ -10,7 +10,7 @@ const Create = () => {
   const [isPending, setIsPending] = useState(false);
   const history = useHistory();
   const isRegistered = localStorage.getItem("userName");
-  const { data: categories } = useGet("http://localhost:8800/categories");
+  const { data: categories } = useGet("https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/categories");
   let creator = localStorage.getItem("userName");
   const [selectedValues, setSelectedValues] = useState([]);
 
@@ -45,7 +45,7 @@ const Create = () => {
       categoryId: selectedValues,
     };
     e.preventDefault();
-    axiosPost("http://localhost:8800/posts-add", data);
+    axiosPost("https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/posts-add", data);
     history.push("/");
     setIsPending(false);
   };

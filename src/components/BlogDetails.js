@@ -15,29 +15,29 @@ const BlogDetails = () => {
     data: blog,
     error,
     isPending,
-  } = useGet(`http://localhost:8800/post/${id}`, {
+  } = useGet(`https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/post/${id}`, {
     headers: {
       "x-access-token": localStorage.getItem("token"),
     },
   });
   const { data: categories } = useGet(
-    `http://localhost:8800/categories/${id}`,
+    `https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/categories/${id}`,
     { headers: { "x-access-token": localStorage.getItem("token") } }
   );
   const user_id = localStorage.getItem("userId");
   const { data: like } = useGet(
-    `http://localhost:8800/post/is-liked/${id}/${user_id}`
+    `https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/post/is-liked/${id}/${user_id}`
   );
   const { data: likesCount } = useGet(
-    `http://localhost:8800/post/likes-count/${id}`
+    `https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/post/likes-count/${id}`
   );
   const { data: saved } = useGet(
-    `http://localhost:8800/post/is-saved/${id}/${user_id}`
+    `https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/post/is-saved/${id}/${user_id}`
   );
   const { data: savedCount } = useGet(
-    `http://localhost:8800/post/saved-count/${id}`
+    `https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/post/saved-count/${id}`
   );
-  const { data: comments } = useGet(`http://localhost:8800/comment/${id}`, {
+  const { data: comments } = useGet(`https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/comment/${id}`, {
     headers: {
       "x-access-token": localStorage.getItem("token"),
     },
@@ -51,7 +51,7 @@ const BlogDetails = () => {
   useEffect(() => {
     if (!isMounted.current) {
       try {
-        const commentsData = axiosGet(`http://localhost:8800/comment/${id}`, {
+        const commentsData = axiosGet(`https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/comment/${id}`, {
           headers: { "x-access-token": localStorage.getItem("token") },
         });
         commentsData.then((data) => {
@@ -65,7 +65,7 @@ const BlogDetails = () => {
   }, [comments, id]);
 
   const handleCommentsChange = async () => {
-    const commentsData = axiosGet(`http://localhost:8800/comment/${id}`, {
+    const commentsData = axiosGet(`https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/comment/${id}`, {
       headers: { "x-access-token": localStorage.getItem("token") },
     });
     commentsData.then((data) => {
@@ -82,24 +82,24 @@ const BlogDetails = () => {
   };
 
   function handleAllCommentsDelete() {
-    axiosDelete(`http://localhost:8800/all-comments-delete/${id}`);
+    axiosDelete(`https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/all-comments-delete/${id}`);
     handleCommentsChange();
   }
 
   function handleSubmit(e) {
     const data = { comment: newComment, username: userName };
-    axiosPost(`http://localhost:8800/comment/${id}`, data);
+    axiosPost(`https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/comment/${id}`, data);
     handleCommentsChange();
   }
 
   function handlePostDelete() {
-    axiosDelete(`http://localhost:8800/delete/${id}`);
+    axiosDelete(`https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/delete/${id}`);
     history.push("/");
   }
 
   function handleCommentDelete(commentId) {
     axios
-      .delete(`http://localhost:8800/comment-delete`, {
+      .delete(`https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/comment-delete`, {
         data: { id: commentId },
       })
       .then((response) => {
@@ -115,26 +115,26 @@ const BlogDetails = () => {
   const handleLikeClick = () => {
     if (like.likeStatus === true) {
       window.location.reload();
-      axiosPost(`http://localhost:8800/post/unlike/${id}`, {
+      axiosPost(`https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/post/unlike/${id}`, {
         user_id: user_id,
       });
     }
     if (like.likeStatus === false) {
       window.location.reload();
-      axiosPost(`http://localhost:8800/post/like/${id}`, { user_id: user_id });
+      axiosPost(`https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/post/like/${id}`, { user_id: user_id });
     }
   };
 
   const handleSaveClick = () => {
     if (saved.savedStatus === true) {
       window.location.reload();
-      axiosPost(`http://localhost:8800/post/unsave/${id}`, {
+      axiosPost(`https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/post/unsave/${id}`, {
         user_id: user_id,
       });
     }
     if (saved.savedStatus === false) {
       window.location.reload();
-      axiosPost(`http://localhost:8800/post/save/${id}`, { user_id: user_id });
+      axiosPost(`https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/post/save/${id}`, { user_id: user_id });
     }
   }
 

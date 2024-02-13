@@ -6,7 +6,7 @@ import axiosGet from "../helpFuncs/axiosGet";
 import Checkbox from "@mui/material/Checkbox";
 
 const Bloglist = () => {
-  const { data: categories } = useGet("http://localhost:8800/categories");
+  const { data: categories } = useGet("https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/categories");
   const [selectedCategories, setSelectedCategories] = useState([]);
   const title = localStorage.getItem("categoryTitle");
   if (!localStorage.getItem("categoryTitle"))
@@ -19,7 +19,7 @@ const Bloglist = () => {
   const [totalPages, setTotalPages] = useState(1);
   const itemsPerPage = 5;
   let { sortedBlogs: blogs } = useGet(
-    `http://localhost:8800/pagination?page=${currentPage}&limit=${itemsPerPage}`,
+    `https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/pagination?page=${currentPage}&limit=${itemsPerPage}`,
     {
       headers: { "x-access-token": localStorage.getItem("token") },
     }
@@ -32,7 +32,7 @@ const Bloglist = () => {
     ) {
       try {
         const response = await axios.post(
-          `http://localhost:8800/pagination/categories?page=${currentPage}&limit=${itemsPerPage}`,
+          `https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/pagination/categories?page=${currentPage}&limit=${itemsPerPage}`,
           { data: { id: localStorage.getItem("selectedOptions") } }
         );
         setStateBlogs(response.data.sortedBlogs);
@@ -55,7 +55,7 @@ const Bloglist = () => {
       });
       try {
         const response = await axios.post(
-          `http://localhost:8800/pagination/search?page=${currentPage}&limit=${itemsPerPage}`,
+          `https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/pagination/search?page=${currentPage}&limit=${itemsPerPage}`,
           { data: { postIds: selectedOptions } }
         );
         setStateBlogs(response.data.sortedBlogs);
@@ -73,7 +73,7 @@ const Bloglist = () => {
     ) {
       try {
         const response = await axios.get(
-          `http://localhost:8800/pagination?page=${currentPage}&limit=${itemsPerPage}`
+          `https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/pagination?page=${currentPage}&limit=${itemsPerPage}`
         );
         setStateBlogs(response.data.sortedBlogs);
         console.log("cycle3");
@@ -103,7 +103,7 @@ const Bloglist = () => {
     if (!isMounted.current) {
       try {
         let blogsData = axiosGet(
-          `http://localhost:8800/pagination?page=${currentPage}&limit=${itemsPerPage}`,
+          `https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/pagination?page=${currentPage}&limit=${itemsPerPage}`,
           {
             headers: { "x-access-token": localStorage.getItem("token") },
           }
@@ -136,7 +136,7 @@ const Bloglist = () => {
     localStorage.setItem("popularBlogs", "");
     const searchBarValue = e.target.value;
     axios
-      .post("http://localhost:8800/search-bar", {
+      .post("https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/search-bar", {
         data: { searchBar: searchBarValue },
       })
       .then((res) => {
@@ -182,7 +182,7 @@ const Bloglist = () => {
 
     try {
       if (e.target.value === "All blogs") {
-        const res = await axios.get("http://localhost:8800/posts", {
+        const res = await axios.get("https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/posts", {
           headers: { "x-access-token": localStorage.getItem("token") },
         });
 
@@ -202,7 +202,7 @@ const Bloglist = () => {
         }
         return JSON.stringify(res.data);
       }
-      const res = await axios.post("http://localhost:8800/categories-filter", {
+      const res = await axios.post("https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/categories-filter", {
         data: { id: selectedOptions },
       });
 
@@ -230,7 +230,7 @@ const Bloglist = () => {
     if (buttonClassName === "") {
       setButtonClassName("fa fa-arrow-up");
       fetch(
-        `http://localhost:8800/pagination/popular-blogs/${currentPage}/${itemsPerPage}`
+        `https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/pagination/popular-blogs/${currentPage}/${itemsPerPage}`
       )
         .then((response) => response.json())
         .then((data) => {

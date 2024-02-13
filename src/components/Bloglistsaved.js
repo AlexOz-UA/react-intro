@@ -5,7 +5,7 @@ const Bloglistliked = () => {
   if (!localStorage.getItem("categoryTitle"))
     localStorage.setItem("categoryTitle", "Blogs with category: All blogs");
   const user_id = localStorage.getItem("userId");
-  let { data: blogs } = useGet(`http://localhost:8800/posts-saved/${user_id}`, {
+  let { data: blogs } = useGet(`https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/posts-saved/${user_id}`, {
     headers: { "x-access-token": localStorage.getItem("token") },
   });
   const isRegistered = localStorage.getItem("userName");

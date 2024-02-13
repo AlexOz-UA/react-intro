@@ -7,7 +7,7 @@ const Home = () => {
     data: blogs,
     isPending,
     error,
-  } = useGet("http://localhost:8800/posts", {
+  } = useGet("https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/posts", {
     headers: { "x-access-token": localStorage.getItem("token") },
   });
 

@@ -7,27 +7,27 @@ import { Redirect } from "react-router-dom";
 
 const AdminPage = (props) => {
 
-  const { data: categories } = useGet("http://localhost:8800/categories");
+  const { data: categories } = useGet("https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/categories");
   const [categoryTitle, setCategoryTitle] = useState();
   const [categoryForDelete, setCategoryForDelete] = useState();
   const adminState = localStorage.getItem("isAdmin");
 
   function handleAllCommentsDelete() {
-    axiosDelete(`http://localhost:8800/all-comments-delete`);
+    axiosDelete(`https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/all-comments-delete`);
   }
 
   function handleAllPostsDelete() {
-    axiosDelete(`http://localhost:8800/all-posts-delete`);
+    axiosDelete(`https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/all-posts-delete`);
   }
 
   const handleCategoryAdd = () => {
     const data = { title: categoryTitle };
-    axiosPost("http://localhost:8800/category-add", data);
+    axiosPost("https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/category-add", data);
   };
 
   const handleCategoryDelete = (e) => {
     axios
-      .delete("http://localhost:8800/category-delete", {
+      .delete("https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/category-delete", {
         data: {
           id: categoryForDelete,
         },
