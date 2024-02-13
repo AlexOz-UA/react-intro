@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { Redirect, useHistory } from "react-router-dom";
 
 function Login() {
   
@@ -7,11 +8,9 @@ function Login() {
   const [userPassword, setPassword] = useState("");
   const isRegistered = localStorage.getItem("userName");
   const [loginStatus, setLoginStatus] = useState("");
+  const history = useHistory();
 
   const handleLogin = () => {
-    setTimeout(() => {
-      window.location.reload();
-    }, 1000);
     let data = { username: userName, password: userPassword };
     axios
       .post("https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/user-login", {
@@ -53,6 +52,15 @@ function Login() {
         console.error("There is an error: " + error);
       });
   };
+
+  useEffect(() => {
+    if (isRegistered) {
+      setTimeout(() => {
+        window.location.reload()
+        history.push("/");
+      }, 1000);
+    }
+  }, [isRegistered, history ]);
 
   return (
     <div className="login">
