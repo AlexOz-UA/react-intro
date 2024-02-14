@@ -3,16 +3,14 @@ import useGet from "../hooks/https/useGet";
 import axios from "axios";
 import { useEffect, useState, useRef } from "react";
 import axiosGet from "../helpFuncs/axiosGet";
-import Checkbox from "@mui/material/Checkbox";
 
 const Bloglist = () => {
 
   window.addEventListener("load", (event) => {
-    handlePostSorting();
+    setButtonClassName("");
   });
 
   const { data: categories } = useGet("https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/categories");
-  const [selectedCategories, setSelectedCategories] = useState([]);
   const title = localStorage.getItem("categoryTitle");
   if (!localStorage.getItem("categoryTitle"))
     localStorage.setItem("categoryTitle", "Blogs with category: All blogs");
@@ -50,6 +48,7 @@ const Bloglist = () => {
 
     if (
       localStorage.getItem("filteredBlogs") === "" &&
+      localStorage.getItem("popularBlogs") === "" &&
       localStorage.getItem("searchedBlogs") !== ""
     ) {
       const parsedPosts = JSON.parse(localStorage.getItem("searchedBlogs"));
@@ -75,7 +74,6 @@ const Bloglist = () => {
       localStorage.getItem("popularBlogs") === ""
     ) {
       try {
-        console.log("cycle3");
         const response = await axios.get(
           `https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/pagination/?page=${currentPage}&limit=${itemsPerPage}`
         );
@@ -230,12 +228,26 @@ const Bloglist = () => {
     }
   };
 
-  const handlePostSorting = () => {
-    if (buttonClassName === "") {
+  const handlePostSorting = async () => {
+    if (buttonClassName === "" && localStorage.getItem("filteredBlogs") && 
+    localStorage.getItem("categoryTitle") !== "Blogs with category: All blogs") {
       setButtonClassName("fa fa-arrow-up");
-      fetch(
-        `https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/pagination/popular-blogs/${currentPage}/${itemsPerPage}`
-      )
+      try {
+        const response = await axios.post(
+          `https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/pagination/categories-popular?page=${currentPage}&limit=${itemsPerPage}`,
+          { data: { id: localStorage.getItem("selectedOptions") } }
+        );
+        console.log(response);
+        localStorage.setItem("popularBlogs",JSON.stringify(response.data.sortedBlogs));
+        setStateBlogs(response.data.sortedBlogs);
+        return;
+      } catch (error) {
+        console.error("Error fetching popular blogs:", error);
+      }
+    }
+    else if(buttonClassName === "" && localStorage.getItem("categoryTitle") == "Blogs with category: All blogs"){
+      setButtonClassName("fa fa-arrow-up");
+      fetch(`https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/pagination/popular-blogs/${currentPage}/${itemsPerPage}`)
         .then((response) => response.json())
         .then((data) => {
           localStorage.setItem(
