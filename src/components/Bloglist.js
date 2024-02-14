@@ -41,7 +41,6 @@ const Bloglist = () => {
           { data: { id: localStorage.getItem("selectedOptions") } }
         );
         setStateBlogs(response.data.sortedBlogs);
-        console.log("cycle1");
         setTotalPages(Math.ceil(response.data.totalItems / itemsPerPage));
         return;
       } catch (error) {
@@ -64,7 +63,6 @@ const Bloglist = () => {
           { data: { postIds: selectedOptions } }
         );
         setStateBlogs(response.data.sortedBlogs);
-        console.log("cycle2");
         setTotalPages(Math.ceil(response.data.totalItems / itemsPerPage));
         return;
       } catch (error) {
@@ -77,9 +75,11 @@ const Bloglist = () => {
       localStorage.getItem("popularBlogs") === ""
     ) {
       try {
+        console.log("cycle3");
         const response = await axios.get(
-          `https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/pagination/popular-blogs/?page=${currentPage}&limit=${itemsPerPage}`
+          `https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/pagination/?page=${currentPage}&limit=${itemsPerPage}`
         );
+        console.log(response.data.sortedBlogs);
         setStateBlogs(response.data.sortedBlogs);
         setTotalPages(Math.ceil(response.data.totalItems / itemsPerPage));
       } catch (error) {
