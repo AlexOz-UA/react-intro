@@ -43,7 +43,6 @@ const BlogDetails = () => {
     },
   });
   const [stateComments, setStateComments] = useState(null);
-  const [isLiked, setIsLiked] = useState(null);
   const isMounted = useRef(false);
 
   let [newComment, setComment] = useState("");
@@ -113,34 +112,23 @@ const BlogDetails = () => {
       });
   }
 
-  const handleLikeClick = () => {
-    if (like.likeStatus === true) {
-      axiosPost(`https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/post/unlike/${id}`, {
-        user_id: user_id,
-      });
+  const handleLikeClick = async () => {
+    try {
+      if (like.likeStatus === true) {
+        axiosPost(`https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/post/unlike/${id}`, {
+          user_id: user_id,
+        });
+      } else if (like.likeStatus === false) {
+        axiosPost(`https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/post/like/${id}`, { user_id: user_id });
+      }
       setTimeout(() => {
         window.location.reload();
       }, 100);
-      setIsLiked(true)
-    }
-    if (like.likeStatus === false) {
-      axiosPost(`https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/post/like/${id}`, { user_id: user_id });
-      setTimeout(() => {
-        window.location.reload();
-      }, 100);
-      setIsLiked(false)
+    } catch (error) {
+      console.error("Error handling like click:", error);
     }
   };
-
-  // useEffect( async () => {
-  //    try {
-  //     const response = await axios.get(`https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/post/is-liked/${id}/${user_id}`);
-  //     like = response.data
-  //   } catch (error) {
-  //     console.error("Error fetching data:", error);
-  //     return null;
-  //   };
-  // }, [isLiked])
+  
 
   const handleSaveClick = () => {
     if (saved.savedStatus === true) {
@@ -239,7 +227,6 @@ const BlogDetails = () => {
                 </div>
               )}
               {isRegistered && (
-                // <form onSubmit={handleSubmit}>
                 <div>
                   <h3 style={{ position: "relative", top: "21.5px" }}>
                     Write something new...
@@ -253,7 +240,6 @@ const BlogDetails = () => {
                   <button style={{ position: "relative", top: "-28px" }} onClick={handleSubmit}>
                     Post
                   </button>
-                {/* </form> */}
                 </div>
               )}
             </article>
