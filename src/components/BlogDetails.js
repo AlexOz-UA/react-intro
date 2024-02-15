@@ -144,14 +144,18 @@ const BlogDetails = () => {
 
   const handleSaveClick = () => {
     if (saved.savedStatus === true) {
-      window.location.reload();
       axiosPost(`https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/post/unsave/${id}`, {
         user_id: user_id,
       });
+      setTimeout(() => {
+        window.location.reload();
+      }, 100);
     }
     if (saved.savedStatus === false) {
-      window.location.reload();
       axiosPost(`https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/post/save/${id}`, { user_id: user_id });
+      setTimeout(() => {
+        window.location.reload();
+      }, 100);
     }
   }
 
