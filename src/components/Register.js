@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 function Register() {
@@ -26,8 +26,10 @@ function Register() {
       setPasswordError("Your password must contain atleast one letter, number and a special symbol.");
       return;
     }
+    else{
     setPasswordError("")
     setPassword(e.target.value)
+    }
   }
 
   const handleLogin = async (e) => {
@@ -37,19 +39,16 @@ function Register() {
       return;
     }
 
-    if (!userPassword.match(/^(?=.*[A-Za-z])(?=.*[!@#$%^&*()])/)) {
+    if (!userPassword.match(/^(?=.*[A-Za-z])(?=.*[_!@#$%^&*()])/)) {
       setPasswordError("Your password must contain atleast one letter, number and a special symbol.");
       return;
     }
-    setPasswordError("")
 
     if (userPassword.length < 8 || userPassword.length > 20) {
       setPasswordError("Password must be between 8 and 20 characters");
       return;
     }
     let data = { username: userName, email: userEmail, password: userPassword };
-    setEmailError("")
-    console.log(data);
     const response = await axios.post("https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/user-register", {
       data,
     });
@@ -57,8 +56,23 @@ function Register() {
       setMessage(response.data.message);
       return;
     }
-    setMessage("The registration was succesful");
+    else{
+      setMessage("The registration was succesful");
+    }
   };
+
+  useEffect(() => {
+    if (userEmail.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i)) {
+      setEmailError("");
+      return;
+    }
+  }, [userEmail])
+  useEffect(() => {
+    if (userPassword.match(/^(?=.*[A-Za-z])(?=.*[_!@#$%^&*()])/)) {
+      setPasswordError("");
+      return;
+    }
+  }, [userPassword])
 
   return (
     <div className="login">
