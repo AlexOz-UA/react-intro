@@ -9,6 +9,9 @@ function Register() {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const isRegistered = localStorage.getItem("userName");
+  const [passwordInputType, setPasswordInputType] = useState("password");
+  const [passwordShowButton, setPasswordShowButton] = useState("fa-solid fa-eye");
+  const [usernameMessage, setUsernameMessage] = useState("");
 
   const handleEmailValidation = (e) =>{
     setEmail(e.target.value)
@@ -32,8 +35,28 @@ function Register() {
     }
   }
 
+  const handlePasswordShowButton = () => {
+    if(passwordInputType === "password"){
+      setPasswordInputType("text")
+      setPasswordShowButton("fa-solid fa-eye-slash")
+    }
+    else{
+      setPasswordInputType("password")
+      setPasswordShowButton("fa-solid fa-eye")
+    }
+  }
+
   const handleLogin = async (e) => {
     e.preventDefault();
+
+    if(userName.trim() == ""){
+      setUsernameMessage("You cannot have an empty username.")
+      setTimeout(() => {
+        setUsernameMessage("")
+      }, 1500);
+      return
+    }
+
     if (!userEmail.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i)) {
       setEmailError("Please enter a valid email address.");
       return;
@@ -67,6 +90,7 @@ function Register() {
       return;
     }
   }, [userEmail])
+  
   useEffect(() => {
     if (userPassword.match(/^(?=.*[A-Za-z])(?=.*[_!@#$%^&*()])/)) {
       setPasswordError("");
@@ -89,6 +113,7 @@ function Register() {
                 value={userName}
                 onChange={(e) => setUsername(e.target.value)}
               />
+            <p style={{color: "red"}}>{usernameMessage}</p>
             </label>
             <br />
             <label>
@@ -108,10 +133,11 @@ function Register() {
                 required
                 minLength={8}
                 maxLength={20}
-                type="password"
+                type={passwordInputType}
                 value={userPassword}
                 onChange={(e) => handlePasswordValidation(e)}
               />
+              <button className="password__show" onClick={handlePasswordShowButton}><i className={passwordShowButton} style={{color: "white"}}></i></button>
               <span style={{ color: "red" }}>{passwordError}</span>
             </label>
             <br />

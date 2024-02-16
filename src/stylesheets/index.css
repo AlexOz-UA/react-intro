@@ -8,10 +8,11 @@
     color: #333;
   }
 
+
   #root button:hover{
-    background-color: #c12353;
+    background-color: hsl(342, 69%, 50%);
     cursor: pointer;
-  } 
+  }
 
   .navbar {
     padding: 20px;
@@ -222,11 +223,7 @@
     transition: background-color 0.3s ease-in-out;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   }
-
-  #category:hover {
-    background-color: #ce2256;
-    cursor: pointer;
-  }
+  
   .footer {
     width: 650px;
     margin: 100px 0px 0px 0px;

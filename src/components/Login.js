@@ -9,6 +9,8 @@ function Login() {
   const isRegistered = localStorage.getItem("userName");
   const [loginStatus, setLoginStatus] = useState("");
   const history = useHistory();
+  const [passwordInputType, setPasswordInputType] = useState("password");
+  const [passwordShowButton, setPasswordShowButton] = useState("fa-solid fa-eye")
 
   const handleLogin = () => {
     let data = { username: userName, password: userPassword };
@@ -53,6 +55,17 @@ function Login() {
       });
   };
 
+  const handlePasswordShowButton = () => {
+    if(passwordInputType === "password"){
+      setPasswordInputType("text")
+      setPasswordShowButton("fa-solid fa-eye-slash")
+    }
+    else{
+      setPasswordInputType("password")
+      setPasswordShowButton("fa-solid fa-eye")
+    }
+  }
+
   useEffect(() => {
     if (isRegistered) {
       setTimeout(() => {
@@ -81,13 +94,15 @@ function Login() {
           <label>
             Password:
             <input
-              type="password"
+              type={passwordInputType}
               value={userPassword}
               onChange={(e) => setPassword(e.target.value)}
               required
               minLength={8}
               maxLength={20}
             />
+            <button className="password__show" onClick={handlePasswordShowButton}><i className={passwordShowButton} style={{color: "white"}}></i></button>
+
           </label>
           <br />
           <button onClick={handleLogin}>Log In</button>
@@ -111,7 +126,7 @@ function Login() {
           <label>
             Password:
             <input
-              type="password"
+              type={passwordInputType}
               value={userPassword}
               onChange={(e) => setPassword(e.target.value)}
               disabled

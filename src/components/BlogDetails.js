@@ -44,6 +44,7 @@ const BlogDetails = () => {
   });
   const [stateComments, setStateComments] = useState(null);
   const isMounted = useRef(false);
+  const [commentMessage, setCommentMessage] = useState("");
 
   let [newComment, setComment] = useState("");
   let userName = localStorage.getItem("userName");
@@ -87,9 +88,20 @@ const BlogDetails = () => {
   }
 
   function handleSubmit(e) {
+    if(newComment.trim() !== ""){
     const data = { comment: newComment, username: userName };
     axiosPost(`https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/comment/${id}`, data);
     handleCommentsChange();
+    e.target.parentNode.childNodes[1].value = "";
+    setComment("")
+    }
+    else{
+      setCommentMessage("You cannot send an empty comment!")
+      setTimeout(() => {
+        setCommentMessage("")
+      }, 1500);
+      return
+    }
   }
 
   function handlePostDelete() {
@@ -224,8 +236,12 @@ const BlogDetails = () => {
                       <p style={{ marginBottom: "20px" }}>{item.title}</p>
                     </li>
                   ))}
+                  {stateComments == "" && (
+                <p>No comments here yet...</p>
+                  )}
                 </div>
               )}
+              <p style={{color: "red"}}>{commentMessage}</p>
               {isRegistered && (
                 <div>
                   <h3 style={{ position: "relative", top: "21.5px" }}>
@@ -233,7 +249,7 @@ const BlogDetails = () => {
                   </h3>
                   <textarea
                     required
-                    maxLength={255}
+                    maxLength={1000}
                     placeholder="Write smth!"
                     onChange={(e) => setComment(e.target.value)}
                   ></textarea>

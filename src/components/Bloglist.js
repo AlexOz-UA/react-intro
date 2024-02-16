@@ -29,10 +29,19 @@ const Bloglist = () => {
   );
 
   const fetchData = async () => {
-    if (
-      localStorage.getItem("filteredBlogs") &&
-      localStorage.getItem("categoryTitle") !== "Blogs with category: All blogs"
-    ) {
+    if (!localStorage.getItem("popularBlogs") && !localStorage.getItem("filteredBlogs") && !localStorage.getItem("searchedBlogs")) {
+      try {
+        const response = await axios.get(
+          `https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/pagination?page=${currentPage}&limit=${itemsPerPage}`
+        );
+        console.log(response.data.sortedBlogs);
+        setStateBlogs(response.data.sortedBlogs);
+        setTotalPages(Math.ceil(response.data.totalItems / itemsPerPage));
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+    if (localStorage.getItem("filteredBlogs") && localStorage.getItem("categoryTitle") !== "Blogs with category: All blogs") {
       try {
         const response = await axios.post(
           `https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/pagination/categories?page=${currentPage}&limit=${itemsPerPage}`,
@@ -46,11 +55,8 @@ const Bloglist = () => {
       }
     }
 
-    if (
-      localStorage.getItem("filteredBlogs") === "" &&
-      localStorage.getItem("popularBlogs") === "" &&
-      localStorage.getItem("searchedBlogs") !== ""
-    ) {
+    if (localStorage.getItem("filteredBlogs") === "" && localStorage.getItem("popularBlogs") === "" && 
+    localStorage.getItem("searchedBlogs") !== "") {
       const parsedPosts = JSON.parse(localStorage.getItem("searchedBlogs"));
       let selectedOptions = [];
       parsedPosts.forEach((element) => {
@@ -69,10 +75,7 @@ const Bloglist = () => {
       }
     }
 
-    if (
-      !localStorage.getItem("popularBlogs") &&
-      localStorage.getItem("popularBlogs") === ""
-    ) {
+    if (localStorage.getItem("popularBlogs") === "") {
       try {
         const response = await axios.get(
           `https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/pagination/?page=${currentPage}&limit=${itemsPerPage}`
@@ -84,20 +87,29 @@ const Bloglist = () => {
         console.error("Error fetching data:", error);
       }
     }
+
+    if (localStorage.getItem("popularBlogs") && localStorage.getItem("popularBlogs") !== "") {
+      try {
+        const response = await axios.get(
+          `https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/pagination/popular-blogs/${currentPage}/${itemsPerPage}`
+        );
+        console.log(response.data.sortedBlogs);
+        setStateBlogs(response.data.sortedBlogs);
+        setTotalPages(Math.ceil(response.data.totalItems / itemsPerPage));
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
   };
 
   useEffect(() => {
-    handlePostSorting();
-    setTimeout(() => {
+    // handlePostSorting();
       fetchData();
-    }, 100);
   }, [currentPage]);
 
   const handlePageChange = (pageNumber) => {
-    setTimeout(() => {
       fetchData();
-    }, 100);
-    handlePostSorting();
+    // handlePostSorting();
     setCurrentPage(pageNumber);
   };
 
@@ -331,10 +343,11 @@ const Bloglist = () => {
           </div>
         ))}
       {stateBlogs === "TokenExpiredError: jwt expired" && <div></div>}
-      <div className="pagination">
+      {totalPages !== 1 && (
+        <div className="pagination">
         {Array.from({ length: totalPages }, (_, index) => index + 1).map(
           (pageNumber) => (
-            <li key={pageNumber}>
+            <li style={{listStyle:"none"}} key={pageNumber}>
               <button onClick={() => handlePageChange(pageNumber)}>
                 {pageNumber}
               </button>
@@ -342,6 +355,7 @@ const Bloglist = () => {
           )
         )}
       </div>
+      )}
     </div>
   );
 };
