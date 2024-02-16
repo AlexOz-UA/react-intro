@@ -29,7 +29,8 @@ const Bloglist = () => {
   );
 
   const fetchData = async () => {
-    if (!localStorage.getItem("popularBlogs") && !localStorage.getItem("filteredBlogs") && !localStorage.getItem("searchedBlogs")) {
+    if (!localStorage.getItem("popularBlogs") && !localStorage.getItem("filteredBlogs") && !localStorage.getItem("unpopularBlogs") 
+    && !localStorage.getItem("searchedBlogs")) {
       try {
         const response = await axios.get(
           `https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/pagination?page=${currentPage}&limit=${itemsPerPage}`
@@ -55,8 +56,8 @@ const Bloglist = () => {
       }
     }
 
-    if (localStorage.getItem("filteredBlogs") === "" && localStorage.getItem("popularBlogs") === "" && 
-    localStorage.getItem("searchedBlogs") !== "") {
+    if (localStorage.getItem("filteredBlogs") === "" && localStorage.getItem("popularBlogs") === "" &&
+     localStorage.getItem("unpopularBlogs") === "" && localStorage.getItem("searchedBlogs") !== "") {
       const parsedPosts = JSON.parse(localStorage.getItem("searchedBlogs"));
       let selectedOptions = [];
       parsedPosts.forEach((element) => {
@@ -75,11 +76,25 @@ const Bloglist = () => {
       }
     }
 
-    if (localStorage.getItem("popularBlogs") === "") {
+    if (localStorage.getItem("popularBlogs") === "" && localStorage.getItem("unpopularBlogs") === "") {
       try {
         const response = await axios.get(
           `https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/pagination/?page=${currentPage}&limit=${itemsPerPage}`
         );
+        console.log(response.data.sortedBlogs);
+        setStateBlogs(response.data.sortedBlogs);
+        setTotalPages(Math.ceil(response.data.totalItems / itemsPerPage));
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    } 
+
+    if (localStorage.getItem("unpopularBlogs") && localStorage.getItem("unpopularBlogs") !== "") {
+      try {
+        const response = await axios.get(
+          `https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/pagination/unpopular-blogs/${currentPage}/${itemsPerPage}`
+        );
+        localStorage.setItem("popularBlogs", "")
         console.log(response.data.sortedBlogs);
         setStateBlogs(response.data.sortedBlogs);
         setTotalPages(Math.ceil(response.data.totalItems / itemsPerPage));
@@ -93,6 +108,7 @@ const Bloglist = () => {
         const response = await axios.get(
           `https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/pagination/popular-blogs/${currentPage}/${itemsPerPage}`
         );
+        localStorage.setItem("unpopularBlogs", "")
         console.log(response.data.sortedBlogs);
         setStateBlogs(response.data.sortedBlogs);
         setTotalPages(Math.ceil(response.data.totalItems / itemsPerPage));
@@ -103,13 +119,11 @@ const Bloglist = () => {
   };
 
   useEffect(() => {
-    // handlePostSorting();
       fetchData();
   }, [currentPage]);
 
   const handlePageChange = (pageNumber) => {
       fetchData();
-    // handlePostSorting();
     setCurrentPage(pageNumber);
   };
 
@@ -148,6 +162,7 @@ const Bloglist = () => {
   const handleSearch = (e) => {
     localStorage.setItem("filteredBlogs", "");
     localStorage.setItem("popularBlogs", "");
+    localStorage.setItem("unpopularBlogs", "");
     const searchBarValue = e.target.value;
     axios
       .post("https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/search-bar", {
@@ -167,6 +182,7 @@ const Bloglist = () => {
   const handleCategoryChange = async (e) => {
     localStorage.setItem("searchedBlogs", "");
     localStorage.setItem("popularBlogs", "");
+    localStorage.setItem("unpopularBlogs", "");
     const selectElement = e.target;
     const options = selectElement.options;
     const selectedOptions = [];
@@ -241,7 +257,7 @@ const Bloglist = () => {
   };
 
   const handlePostSorting = async () => {
-    if (buttonClassName === "" && localStorage.getItem("filteredBlogs") && 
+    if (buttonClassName === "" || buttonClassName === "fa fa-arrow-down" && localStorage.getItem("filteredBlogs") && 
     localStorage.getItem("categoryTitle") !== "Blogs with category: All blogs") {
       setButtonClassName("fa fa-arrow-up");
       try {
@@ -250,6 +266,7 @@ const Bloglist = () => {
           { data: { id: localStorage.getItem("selectedOptions") } }
         );
         console.log(response);
+        localStorage.setItem("unpopularBlogs", "")
         localStorage.setItem("popularBlogs",JSON.stringify(response.data.sortedBlogs));
         setStateBlogs(response.data.sortedBlogs);
         return;
@@ -257,7 +274,7 @@ const Bloglist = () => {
         console.error("Error fetching popular blogs:", error);
       }
     }
-    else if(buttonClassName === "" && localStorage.getItem("categoryTitle") == "Blogs with category: All blogs"){
+    else if(buttonClassName === "" || buttonClassName === "fa fa-arrow-down" && localStorage.getItem("categoryTitle") == "Blogs with category: All blogs"){
       setButtonClassName("fa fa-arrow-up");
       fetch(`https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/pagination/popular-blogs/${currentPage}/${itemsPerPage}`)
         .then((response) => response.json())
@@ -266,6 +283,7 @@ const Bloglist = () => {
             "popularBlogs",
             JSON.stringify(data.sortedBlogs)
           );
+          localStorage.setItem("unpopularBlogs", "")
           console.log(data.sortedBlogs);
           setStateBlogs(data.sortedBlogs);
         })
@@ -273,11 +291,22 @@ const Bloglist = () => {
           console.error("Error fetching popular blogs:", error);
         });
     }
-
-    if (buttonClassName === "fa fa-arrow-up") {
-      setButtonClassName("");
-      localStorage.setItem("popularBlogs", "");
-      fetchData();
+    else if(buttonClassName === "fa fa-arrow-up" && localStorage.getItem("categoryTitle") == "Blogs with category: All blogs"){
+      setButtonClassName("fa fa-arrow-down");
+      fetch(`https://fathomless-garden-74281-01ac0e8623bc.herokuapp.com/pagination/unpopular-blogs/${currentPage}/${itemsPerPage}`)
+        .then((response) => response.json())
+        .then((data) => {
+          localStorage.setItem(
+            "unpopularBlogs",
+            JSON.stringify(data.sortedBlogs)
+          );
+          localStorage.setItem("popularBlogs", "")
+          console.log(data.sortedBlogs);
+          setStateBlogs(data.sortedBlogs);
+        })
+        .catch((error) => {
+          console.error("Error fetching popular blogs:", error);
+        });
     }
   };
 
@@ -291,7 +320,7 @@ const Bloglist = () => {
         id="categorySelect"
         multiple
       >
-        <option value={titleClear}>
+        <option value={titleClear} hidden>
           {localStorage.getItem("categoryTitle") ===
             "No blogs with this category." && "No blogs."}
           {localStorage.getItem("categoryTitle") !==
